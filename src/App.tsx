@@ -1,0 +1,18 @@
+import { useState } from 'react'
+import Navbar from './components/layout/Navbar'
+import { USERS } from './data/users' // Importamos los usuarios de prueba
+import type { User } from './types' // Importamos el tipo para el estado
+import './App.css'
+
+function App() {
+  const [currentUser, setCurrentUser] = useState<User | null>(USERS[0]);
+
+
+  return (
+    <div className='app'>
+      <Navbar User={currentUser}></Navbar>
+      </div>
+  )
+}
+
+export default App
