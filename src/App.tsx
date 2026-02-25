@@ -5,7 +5,7 @@ import type { User } from './types' // Importamos el tipo para el estado
 import './App.css'
 
 function App() {
-  const [currentUser, setCurrentUser] = useState<User | null>(USERS[0]);
+  const [currentUser, setCurrentUser] = useState<User | null>(USERS[2]);
 
 
   return (
