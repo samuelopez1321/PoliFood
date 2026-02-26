@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Navbar from './components/layout/Navbar'
+import Footer from './components/layout/PageFooter'
 import { USERS } from './data/users' // Importamos los usuarios de prueba
 import type { User } from './types' // Importamos el tipo para el estado
 import './App.css'
@@ -11,7 +12,9 @@ function App() {
   return (
     <div className='app'>
       <Navbar User={currentUser}></Navbar>
-      </div>
+
+      <Footer></Footer>
+    </div>
   )
 }
 
