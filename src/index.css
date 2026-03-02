@@ -1,6 +1,22 @@
 @import "tailwindcss";
 
-/* Tus estilos personalizados abajo */
-body {
-  @apply bg-gray-50 text-gray-900;
+@theme {
+  /* Definimos los colores primarios */
+  --color-primary: #16a34a;
+  --color-primary-light: #4ade80;
+  --color-primary-dark: #15803d;
+
+  /* Definimos los colores secundarios */
+  --color-secondary: #facc15;
+  --color-secondary-dark: #eab308;
+
+  /* Definimos el color de acento */
+  --color-accent: #ef4444;
+  --color-accent-dark: #b91c1c;
+
+  /* Definimos la escala neutral */
+  --color-neutral-50: #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
 }

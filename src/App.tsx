@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/PageFooter'
+import Button  from './common/UI/Button'
 import { USERS } from './data/users'
 import type { User } from './types'
 
