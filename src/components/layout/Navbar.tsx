@@ -3,9 +3,10 @@ import { STORES } from '../../data/stores';
 
 interface NavbarProps {
   User: User | null;
+  cartCount: number;
 }
 
-export default function Navbar({ User }: NavbarProps) {
+export default function Navbar({ User, cartCount }: NavbarProps) {
   const vendorStore = STORES.find(s => s.storeId === User?.storeId);
 
   return (
@@ -27,8 +28,12 @@ export default function Navbar({ User }: NavbarProps) {
                 <button className="px-4 py-2 text-sm font-medium text-neutral-800 hover:text-primary transition-colors">
                   Mis Pedidos
                 </button>
-                <button className="px-4 py-2 text-sm font-semibold bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all">
-                  Carrito 🛒
+                  <button className="px-4 py-2 text-sm font-semibold bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all flex items-center gap-2">                  Carrito 🛒
+                  {cartCount > 0 && (
+                    <span className="bg-primary text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full border border-white shrink-0">
+                      {cartCount}
+                    </span>
+                  )}
                 </button>
               </>
             )}

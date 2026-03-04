@@ -23,7 +23,8 @@ export const Button = ({
     danger: "bg-accent text-white hover:bg-accent-dark shadow-sm",
   };
     return (
-        <button className={`${baseStyles} ${variants[variant]} ${className}`}
+        <button {...props} 
+            className={`${baseStyles} ${variants[variant]} ${className}`}
             disabled={disabled || isLoading}>
             {isLoading ? (
                 <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
