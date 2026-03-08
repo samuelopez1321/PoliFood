@@ -31,13 +31,15 @@ export interface OrderItem {
     quantity: number;
 }
 
-export type OrderStatus = 'Received' | 'Preparing' | 'Ready' | 'Delivered';
+export type OrderStatus = 'RECIBIDO' | 'PREPARANDO' | 'EN CAMINO' | 'ENVIADO';
 
 export interface Order {
     id: number;
+    customerId: number;
+    storeId: number;
     status: OrderStatus;
     items: OrderItem[];
     total: number;
-    createAt: string; // date string
+    createdAt: string; // date string
     etaMinutes: number;
 }

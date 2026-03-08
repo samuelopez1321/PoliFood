@@ -1,5 +1,6 @@
 import type { User } from '../../types';
 import { STORES } from '../../data/stores';
+import { Link } from 'react-router-dom';
 
 interface NavbarProps {
   User: User | null;
@@ -25,36 +26,52 @@ export default function Navbar({ User, cartCount }: NavbarProps) {
             {/* Si es un estudiante */}
             {User?.role === 'STUDENT' && (
               <>
-                <button className="px-4 py-2 text-sm font-medium text-neutral-800 hover:text-primary transition-colors">
-                  Mis Pedidos
-                </button>
-                  <button className="px-4 py-2 text-sm font-semibold bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all flex items-center gap-2">                  Carrito 🛒
-                  {cartCount > 0 && (
-                    <span className="bg-primary text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full border border-white shrink-0">
-                      {cartCount}
-                    </span>
-                  )}
-                </button>
+                  <Link 
+                    to="/mis-pedidos" 
+                    className="px-4 py-2 text-sm font-medium text-neutral-800 hover:text-primary transition-colors"
+                  >
+                    Mis Pedidos
+                  </Link>
+                  <Link 
+                    to="/carrito" 
+                    className="px-4 py-2 text-sm font-semibold bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all flex items-center gap-2"
+                  >
+                    Carrito 🛒
+                    {cartCount > 0 && (
+                      <span className="bg-primary text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full border border-white shrink-0">
+                        {cartCount}
+                      </span>
+                    )}
+                  </Link>
               </>
             )}
 
             {/* Si es un vendor */}
             {User?.role === 'VENDOR' && (
               <>
-                <button className="px-4 py-2 text-sm font-medium text-neutral-800 hover:text-primary transition-colors">
+                <Link 
+                  to="/" 
+                  className="px-4 py-2 text-sm font-medium text-neutral-800 hover:text-primary transition-colors"
+                >
                   Ventas y Pedidos
-                </button>
-                <button className="px-4 py-2 text-sm font-medium text-neutral-800 hover:text-primary transition-colors">
+                </Link>
+                <Link 
+                  to="/vendor/menu" 
+                  className="px-4 py-2 text-sm font-medium text-neutral-800 hover:text-primary transition-colors"
+                >
                   Menú
-                </button>
+                </Link>
               </>
             )}
 
             {/* Si es un admin */}
             {User?.role === 'ADMIN' && (
-              <button className="px-4 py-2 text-sm font-semibold border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-all">
+              <Link 
+                to="/admin/vendors" 
+                className="px-4 py-2 text-sm font-semibold border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-all"
+              >
                 Gestionar Vendors
-              </button>
+              </Link>
             )}
           </div>
 
