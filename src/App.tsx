@@ -6,6 +6,7 @@ import Button  from './common/UI/Button'
 import ProductList from './components/menu/ProductList'
 import HomePage from './pages/HomePage';
 import { VendorDash } from './pages/VendorDash';
+import { AdminPage } from './pages/AdminPage';
 import { StorePage } from './pages/StorePage';
 import type { Product, User, Store } from './types'
 import { PRODUCTS } from './data/products'
@@ -35,7 +36,9 @@ function App() {
                 element={
                   currentUser?.role === 'VENDOR' 
                     ? <VendorDash currentUser={currentUser} /> 
-                    : <HomePage currentUser={currentUser} products={PRODUCTS} />
+                    : currentUser?.role === 'STUDENT'
+                    ? <HomePage currentUser={currentUser} products={PRODUCTS} />
+                    : <AdminPage currentUser={currentUser}/>
                 } 
               />
               <Route

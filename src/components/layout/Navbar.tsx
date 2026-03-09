@@ -15,9 +15,9 @@ export default function Navbar({ User, cartCount }: NavbarProps) {
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         
         {/* Titulo / Logo */}
-        <h2 className="text-2xl font-black text-primary tracking-tighter cursor-pointer">
+        <Link to="/" className="text-2xl font-black text-primary tracking-tighter cursor-pointer">
           PoliFood
-        </h2>
+        </Link>
 
         {/* Navegación Principal */}
         <nav className="flex items-center gap-8">
@@ -63,19 +63,9 @@ export default function Navbar({ User, cartCount }: NavbarProps) {
                 </Link>
               </>
             )}
-
-            {/* Si es un admin */}
-            {User?.role === 'ADMIN' && (
-              <Link 
-                to="/admin/vendors" 
-                className="px-4 py-2 text-sm font-semibold border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-all"
-              >
-                Gestionar Vendors
-              </Link>
-            )}
           </div>
 
-          {/* Sección de Usuario / Info Tienda */}
+          {/* Sección de Usuario / Info Tienda   */}
           <div className="flex items-center gap-4 pl-6 border-l border-neutral-200">
             <div className="flex flex-col text-right">
               <span className="text-sm font-bold text-neutral-900">
