@@ -64,7 +64,6 @@ export default function Navbar({ User, cartCount }: NavbarProps) {
               </>
             )}
           </div>
-
           {/* Sección de Usuario / Info Tienda   */}
           <div className="flex items-center gap-4 pl-6 border-l border-neutral-200">
             <div className="flex flex-col text-right">

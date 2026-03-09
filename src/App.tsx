@@ -6,8 +6,9 @@ import Button  from './common/UI/Button'
 import ProductList from './components/menu/ProductList'
 import HomePage from './pages/HomePage';
 import { VendorDash } from './pages/VendorDash';
-import { AdminPage } from './pages/AdminPage';
 import { StorePage } from './pages/StorePage';
+import { AdminPage } from './pages/AdminPage';
+import { VendorMenuAdmin } from './pages/VendorMenuAdmin';
 import type { Product, User, Store } from './types'
 import { PRODUCTS } from './data/products'
 import { STORES } from './data/stores'
@@ -15,7 +16,7 @@ import { USERS } from './data/users'
 import { ORDERS } from './data/orders';
 
 function App() {
-  const [currentUser, setCurrentUser] = useState<User | null>(USERS[1]);
+  const [currentUser, setCurrentUser] = useState<User | null>(USERS[3]);
   const [cart, setCart] = useState<Product[]>([]);
   
   //Funcion para logica de carrito
@@ -51,6 +52,12 @@ function App() {
                 }
               />
               <Route
+              path="/vendor/menu"
+              element={
+                <VendorMenuAdmin
+                currentUser={currentUser}
+                />
+                }
               />
             </Routes>
         </main>
@@ -59,5 +66,4 @@ function App() {
     </BrowserRouter>
   )
 }
-
 export default App
