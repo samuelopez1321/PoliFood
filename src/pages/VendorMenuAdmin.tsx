@@ -139,7 +139,7 @@ export const VendorMenuAdmin = ({currentUser}: VendorMenuAdminProps) => {
                 {/* LISTA DE PRODUCTOS */}
                 <section className="lg:col-span-2 space-y-4">
                     <div className="bg-white p-4 rounded-2xl border border-neutral-100 flex justify-between items-center shadow-sm">
-                        <h2 className="font-bold text-neutral-800 italic">Productos en vitrina</h2>
+                        <h2 className="font-bold text-neutral-800 italic">Productos en el menu</h2>
                         <IoFastFoodOutline className="text-neutral-300 text-xl" />
                     </div>
 
@@ -148,6 +148,7 @@ export const VendorMenuAdmin = ({currentUser}: VendorMenuAdminProps) => {
                             <div key={product.id} className="p-4 bg-white rounded-2xl border border-neutral-100 shadow-sm flex items-center justify-between hover:border-orange-200 transition-colors">
                                 <div className="flex items-center gap-3">
                                     <div className="w-12 h-12 bg-neutral-100 rounded-lg flex items-center justify-center text-xl">
+                                     <img src={product.imgUrl} alt={product.name} className="w-full h-full object-cover rounded-2xl"/>
                                     </div>
                                     <div>
                                         <p className="font-bold text-neutral-800">{product.name}</p>

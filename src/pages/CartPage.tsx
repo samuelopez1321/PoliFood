@@ -42,8 +42,8 @@ export const CartPage = ({
   const cartItems = Object.values(groupedCartItems);
 
   const subtotal = cart.reduce((sum, product) => sum + product.price, 0);
-  const tax = 0;
-  const total = subtotal + tax;
+  const impuestos = 0;
+  const total = subtotal + impuestos;
 
   const totalItems = cart.length;
 
@@ -136,15 +136,10 @@ export const CartPage = ({
           <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm p-6">
             <CartSummary
               subtotal={subtotal}
-              tax={tax}
+              impuestos={impuestos}
               total={total}
               onCheckout={onCheckout}
             />
-
-            <p className="text-xs text-neutral-400 mt-4 leading-relaxed">
-              Al continuar, tu pedido será enviado a la tienda correspondiente
-              para su preparación.
-            </p>
           </div>
         </aside>
       </div>

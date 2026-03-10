@@ -2,14 +2,14 @@ import { Button } from "../../common/UI/Button";
 
 interface CartSummaryProps {
   subtotal: number;
-  tax?: number;
+  impuestos?: number;
   total: number;
   onCheckout: () => void;
 }
 
 export const CartSummary = ({
   subtotal,
-  tax = 0,
+  impuestos = 0,
   total,
   onCheckout,
 }: CartSummaryProps) => {
@@ -17,7 +17,7 @@ export const CartSummary = ({
     <div className="border rounded-lg p-4 flex flex-col gap-3">
 
       <h2 className="text-lg font-semibold">
-        Order Summary
+        Resumen de Orden
       </h2>
 
       <div className="flex justify-between text-sm">
@@ -26,8 +26,8 @@ export const CartSummary = ({
       </div>
 
       <div className="flex justify-between text-sm">
-        <span>Tax</span>
-        <span>${tax.toFixed(2)}</span>
+        <span>Impuestos</span>
+        <span>${impuestos.toFixed(2)}</span>
       </div>
 
       <div className="flex justify-between font-semibold text-lg border-t pt-2">

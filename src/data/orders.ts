@@ -10,7 +10,7 @@ export const ORDERS: Order[] = [
       { productId: 107, quantity: 1}
     ],
     total: 23000,
-    status: 'PREPARANDO',
+    status: 'RECIBIDO',
     createdAt: new Date().toISOString(),
     etaMinutes: 15
   },

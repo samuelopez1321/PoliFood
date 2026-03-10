@@ -18,7 +18,7 @@ import CartPage from "./pages/CartPage";
 import OrderStatus from "./pages/OrderStatus";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState<User | null>(USERS[0]);
+  const [currentUser, setCurrentUser] = useState<User | null>(USERS[2]);
   const [cart, setCart] = useState<Product[]>([]);
   
   //Funcion para logica de carrito
