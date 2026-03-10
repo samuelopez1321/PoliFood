@@ -14,9 +14,11 @@ import { PRODUCTS } from './data/products'
 import { STORES } from './data/stores'
 import { USERS } from './data/users'
 import { ORDERS } from './data/orders';
+import CartPage from "./pages/CartPage";
+import OrderStatus from "./pages/OrderStatus";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState<User | null>(USERS[2]);
+  const [currentUser, setCurrentUser] = useState<User | null>(USERS[0]);
   const [cart, setCart] = useState<Product[]>([]);
   
   //Funcion para logica de carrito
@@ -25,6 +27,29 @@ function App() {
     console.log("Añadiendo:", product.name);
     setCart((prev) => [...prev, product])
   };
+
+  const handleIncreaseQuantity = (productId: number) => {
+  const productToAdd = PRODUCTS.find((product) => product.id === productId);
+  if (!productToAdd) return;
+
+  setCart((prev) => [...prev, productToAdd]);
+};
+
+const handleDecreaseQuantity = (productId: number) => {
+  const indexToRemove = cart.findIndex((product) => product.id === productId);
+
+  if (indexToRemove === -1) return;
+
+  setCart((prev) => prev.filter((_, index) => index !== indexToRemove));
+};
+
+const handleRemoveFromCart = (productId: number) => {
+  setCart((prev) => prev.filter((product) => product.id !== productId));
+};
+
+const handleCheckout = () => {
+  console.log("Proceder al checkout");
+};
 
   return (
     <BrowserRouter>
@@ -42,6 +67,7 @@ function App() {
                     : <AdminPage currentUser={currentUser}/>
                 } 
               />
+
               <Route
                 path="/store/:storeId"
                 element= {
@@ -51,6 +77,7 @@ function App() {
                   />
                 }
               />
+
               <Route
               path="/vendor/menu"
               element={
@@ -58,6 +85,29 @@ function App() {
                 currentUser={currentUser}
                 />
                 }
+              />
+
+              <Route
+              path="/carrito"
+             element={
+                <CartPage
+                cart={cart}
+                onIncrease={handleIncreaseQuantity}
+                onDecrease={handleDecreaseQuantity}
+                onRemove={handleRemoveFromCart}
+                onCheckout={handleCheckout}
+                 />
+                 }
+              />
+
+               <Route
+               path="/order/:orderId"
+               element={<OrderStatus />}
+              />
+
+               <Route
+               path="/mis-pedidos"
+               element={<OrderStatus />}
               />
             </Routes>
         </main>
