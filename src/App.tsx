@@ -16,7 +16,7 @@ import { USERS } from './data/users'
 import { ORDERS } from './data/orders';
 
 function App() {
-  const [currentUser, setCurrentUser] = useState<User | null>(USERS[3]);
+  const [currentUser, setCurrentUser] = useState<User | null>(USERS[2]);
   const [cart, setCart] = useState<Product[]>([]);
   
   //Funcion para logica de carrito

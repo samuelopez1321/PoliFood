@@ -4,6 +4,7 @@ import { STORES } from '../data/stores';
 import { ORDERS } from '../data/orders';
 import { PRODUCTS } from '../data/products';
 import { USERS } from '../data/users';
+import { ORDER_STATUSES } from "../types";
 import { IoClipboardOutline, IoTimeOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 
 interface VendorDashProps {
@@ -60,7 +61,18 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
                                 </td>
                                 <td className="px-6 py-4">
                                 <div className="flex flex-col">
-                                    <span className="text-xs font-black text-amber-600 mb-1">{order.status}</span>
+                                    <span className="text-xs font-black text-amber-600 mb-1">
+                                        <select
+                                         className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
+                                        >
+                                                {ORDER_STATUSES.map((estado) => (
+                                                    <option key={estado} value={estado}>
+                                                        {estado}
+                                                    </option>
+                                                )
+                                            )}
+                                        </select>
+                                    </span>
                                     <span className="text-xs text-neutral-400 flex items-center gap-1">
                                     <IoTimeOutline /> {order.etaMinutes} min
                                     </span>

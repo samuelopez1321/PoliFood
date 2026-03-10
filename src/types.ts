@@ -30,8 +30,8 @@ export interface OrderItem {
     productId: number;
     quantity: number;
 }
-
-export type OrderStatus = 'RECIBIDO' | 'PREPARANDO' | 'EN CAMINO' | 'ENVIADO';
+export const ORDER_STATUSES = ['RECIBIDO', 'PREPARANDO', 'EN CAMINO', 'ENVIADO'] as const;
+export type OrderStatus = [number];
 
 export interface Order {
     id: number;
