@@ -4,6 +4,7 @@ import { USERS } from '../data/users';
 import { STORES } from '../data/stores';
 import { UserRole } from '../types';
 import { IoPersonAddOutline, IoStorefrontOutline, IoTrashOutline } from "react-icons/io5";
+import { CgPassword } from 'react-icons/cg';
 
 interface AdminPageProps {
     currentUser: User | null;
@@ -14,21 +15,25 @@ export const AdminPage = ({currentUser}: AdminPageProps) => {
     const [allStores, setAllStores] = useState<Store[]>(STORES);
     const [newVendor, setNewVendor] = useState({
         name: '',
+        email: '',
+        password: '',
         storeId:''
     })
-    const vendors = allUsers.filter(u => u.role === 'VENDOR');
-    const handleAddVendor = (e: React.FormEvent<HTMLFormElement>) => {
+    const vendors = allUsers.filter(u => u.role === UserRole.Vendor);
+    const handleAddVendor = (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!newVendor.name || !newVendor.storeId) return;
 
             const newUser: User = {
             id: allUsers.length + 1,
             name: newVendor.name,
+            email: newVendor.email,
+            password: newVendor.password,
             role: UserRole.Vendor,
             storeId: Number(newVendor.storeId)
         };
         setAllUsers([...allUsers, newUser])
-        setNewVendor({ name: '', storeId: '' });
+        setNewVendor({ name: '', storeId: '', email: '', password: ''});
     };
 
     const handleDeleteVendor = (id: number) => {
@@ -38,7 +43,6 @@ export const AdminPage = ({currentUser}: AdminPageProps) => {
             setAllUsers(allUsers.filter(user => user.id !== id));
         }
     };
-    
     return (
         <div className="space-y-10">
             <header>
@@ -61,6 +65,24 @@ export const AdminPage = ({currentUser}: AdminPageProps) => {
                                 type="text"
                                 value={newVendor.name}
                                 onChange={(e) => setNewVendor({...newVendor, name: e.target.value})}
+                                className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary outline-none"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-neutral-700 mb-1">Email</label>
+                            <input 
+                                type="email"
+                                value={newVendor.email}
+                                onChange={(e) => setNewVendor({...newVendor, email: e.target.value})}
+                                className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary outline-none"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-neutral-700 mb-1">Contraseña</label>
+                            <input 
+                                type="password"
+                                value={newVendor.password}
+                                onChange={(e) => setNewVendor({...newVendor, password: e.target.value})}
                                 className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary outline-none"
                             />
                         </div>
