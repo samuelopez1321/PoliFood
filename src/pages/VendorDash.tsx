@@ -4,7 +4,7 @@ import { STORES } from '../data/stores';
 import { ORDERS } from '../data/orders';
 import { PRODUCTS } from '../data/products';
 import { USERS } from '../data/users';
-import { ORDER_STATUSES } from "../types";
+import { orderStatuses } from "../types";
 import { IoClipboardOutline, IoTimeOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 
 interface VendorDashProps {
@@ -24,7 +24,9 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
     if (!store || currentUser?.role !== 'VENDOR') {
         return <div className="p-10 text-center">Acceso no autorizado</div>
     }
+    const STATUS_STEPS = Object.values(orderStatuses);
     //Ahora si podemos crear el dashboard
+
     return (
         <div className="space-y-8">
             <header className="bg-white p-8 rounded-3xl border border-neutral-100 shadow-sm flex justify-between items-center">
@@ -65,7 +67,7 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
                                         <select
                                          className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
                                         >
-                                                {ORDER_STATUSES.map((estado) => (
+                                                {STATUS_STEPS.map((estado) => (
                                                     <option key={estado} value={estado}>
                                                         {estado}
                                                     </option>

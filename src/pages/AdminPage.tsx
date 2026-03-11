@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { User, Store } from '../types';
 import { USERS } from '../data/users';
 import { STORES } from '../data/stores';
+import { UserRole } from '../types';
 import { IoPersonAddOutline, IoStorefrontOutline, IoTrashOutline } from "react-icons/io5";
 
 interface AdminPageProps {
@@ -23,7 +24,7 @@ export const AdminPage = ({currentUser}: AdminPageProps) => {
             const newUser: User = {
             id: allUsers.length + 1,
             name: newVendor.name,
-            role: 'VENDOR',
+            role: UserRole.Vendor,
             storeId: Number(newVendor.storeId)
         };
         setAllUsers([...allUsers, newUser])

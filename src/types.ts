@@ -1,4 +1,8 @@
-export type UserRole = 'STUDENT' | 'VENDOR' | 'ADMIN';
+export enum UserRole {
+    Student = "STUDENT",
+    Vendor = "VENDOR",
+    Admin = "ADMIN"
+}
 
 
 export interface User {
@@ -30,14 +34,19 @@ export interface OrderItem {
     productId: number;
     quantity: number;
 }
-export const ORDER_STATUSES = ['RECIBIDO', 'PREPARANDO', 'EN CAMINO', 'ENVIADO'] as const;
-export type OrderStatus = typeof ORDER_STATUSES[number];
+export enum orderStatuses {
+    Recibido = "RECIBIDO",
+    Preparando = "Preparando",
+    EnCamino = "En Camino",
+    Enviado = "Enviado"
+}
+
 
 export interface Order {
     id: number;
     customerId: number;
     storeId: number;
-    status: OrderStatus;
+    status: orderStatuses;
     items: OrderItem[];
     total: number;
     createdAt: string; // date string

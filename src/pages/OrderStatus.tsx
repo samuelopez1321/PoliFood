@@ -3,13 +3,12 @@ import { IoArrowBackOutline, IoCheckmarkCircle, IoReceiptOutline, IoStorefrontOu
 import { ORDERS } from "../data/orders";
 import { PRODUCTS } from "../data/products";
 import { STORES } from "../data/stores";
-
-const STATUS_STEPS = ["RECIBIDO", "PREPARANDO", "EN CAMINO", "ENVIADO"] as const;
+import { orderStatuses } from "../types";
 
 const statusStyles: Record<string, string> = {
   RECIBIDO: "bg-blue-100 text-blue-700",
   PREPARANDO: "bg-amber-100 text-amber-700",
-  "EN CAMINO": "bg-violet-100 text-violet-700",
+  EnCamino: "bg-violet-100 text-violet-700",
   ENVIADO: "bg-green-100 text-green-700",
 };
 
@@ -50,7 +49,6 @@ export const OrderStatus = () => {
 
         <section className="bg-white rounded-3xl border-2 border-dashed border-neutral-100 shadow-sm px-8 py-20 text-center">
           <div className="max-w-xl mx-auto space-y-4">
-            <div className="text-6xl">📦</div>
             <h1 className="text-3xl font-black text-neutral-900">
               Pedido no encontrado
             </h1>
@@ -74,7 +72,7 @@ export const OrderStatus = () => {
       subtotal: (product?.price ?? 0) * item.quantity,
     };
   });
-
+  const STATUS_STEPS = Object.values(orderStatuses);
   const currentStepIndex = STATUS_STEPS.indexOf(order.status as (typeof STATUS_STEPS)[number]);
 
   return (

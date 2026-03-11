@@ -10,10 +10,12 @@ import { StorePage } from './pages/StorePage';
 import { AdminPage } from './pages/AdminPage';
 import { VendorMenuAdmin } from './pages/VendorMenuAdmin';
 import type { Product, User, Store } from './types'
+import { UserRole } from './types';
 import { PRODUCTS } from './data/products'
 import { STORES } from './data/stores'
 import { USERS } from './data/users'
 import { ORDERS } from './data/orders';
+
 import CartPage from "./pages/CartPage";
 import OrderStatus from "./pages/OrderStatus";
 
@@ -60,11 +62,11 @@ const handleCheckout = () => {
               <Route 
                 path="/"
                 element={
-                  currentUser?.role === 'VENDOR' 
+                  currentUser?.role === 'VENDOR'
                     ? <VendorDash currentUser={currentUser} /> 
-                    : currentUser?.role === 'STUDENT'
+                    : (currentUser?.role === 'STUDENT'
                     ? <HomePage currentUser={currentUser} products={PRODUCTS} />
-                    : <AdminPage currentUser={currentUser}/>
+                    : <AdminPage currentUser={currentUser}/>)
                 } 
               />
 

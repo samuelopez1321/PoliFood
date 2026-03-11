@@ -1,4 +1,5 @@
 import type { Order } from '../types';
+import { orderStatuses } from '../types';
 
 export const ORDERS: Order[] = [
   {
@@ -10,7 +11,7 @@ export const ORDERS: Order[] = [
       { productId: 107, quantity: 1}
     ],
     total: 23000,
-    status: 'RECIBIDO',
+    status: orderStatuses.Recibido,
     createdAt: new Date().toISOString(),
     etaMinutes: 15
   },
@@ -23,7 +24,7 @@ export const ORDERS: Order[] = [
       { productId: 110, quantity: 1}
     ],
     total: 27000,
-    status: 'RECIBIDO',
+    status: orderStatuses.Recibido,
     createdAt: new Date().toISOString(),
     etaMinutes: 12
   },
@@ -35,7 +36,7 @@ export const ORDERS: Order[] = [
       { productId: 103, quantity: 2}
     ],
     total: 32000,
-    status: 'EN CAMINO',
+    status: orderStatuses.EnCamino,
     createdAt: new Date().toISOString(),
     etaMinutes: 5
   }

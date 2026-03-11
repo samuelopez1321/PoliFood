@@ -1,26 +1,26 @@
 import type { User } from '../types';
-
+import { UserRole } from '../types';
 export const USERS: User[] = [
     {
     id: 1,
     name: "Juan Estudiante",
-    role: "STUDENT" 
+    role: UserRole.Student 
   },
   {
     id: 2,
     name: "Admin PoliFood",
-    role: "ADMIN" 
+    role: UserRole.Admin 
   },
   {
     id: 3,
     name: "Don Pepe",
-    role: "VENDOR", 
+    role: UserRole.Vendor, 
     storeId: 1      
   },
   {
     id: 4,
     name: "Maria Vendedora",
-    role: "VENDOR", 
+    role: UserRole.Vendor, 
     storeId: 2
   } 
 ];
