@@ -48,6 +48,7 @@ function App() {
               {!currentUser ? (
                 <>
                   <Route path="/signup" element={<SignUpPage />} />
+                  <Route path="/login" element={<Login onLogin={setCurrentUser} />} />
                   <Route path="*" element={<Navigate to="/signup" replace />} />
                 </>
               ) : (
