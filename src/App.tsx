@@ -1,8 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/PageFooter'
-// Importamos la nueva página
 import SignUpPage from './pages/SignUpPage'; 
 import HomePage from './pages/HomePage';
 import { VendorDash } from './pages/VendorDash';
@@ -15,11 +14,69 @@ import { USERS } from './data/users'
 import CartPage from "./pages/CartPage";
 import LogInPage from "./pages/LogInPage";
 import OrderStatus from "./pages/OrderStatus";
+import { UserRole } from './types';
 
 function App() {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [cart, setCart] = useState<Product[]>([]);
+  const [currentUser, setCurrentUser] = useState<User | null>(() => {
+    try {
+      const saved = localStorage.getItem('currentUser');
+      if (!saved) return null;
+      
+      const parsed = JSON.parse(saved);
+      
+      // Convertir el role a enum
+      const user = {
+        ...parsed,
+        role: parsed.role as UserRole
+      } as User;
+      
+      return user;
+      
+    } catch (error) {
+      console.error('Error al cargar usuario:', error);
+      return null;
+    }
+  });
   
+  const [cart, setCart] = useState<Product[]>(() => {
+    try {
+      const saved = localStorage.getItem('cart');
+      if (!saved) return [];  // ✅ Asegurar array vacío
+      
+      const parsed = JSON.parse(saved);
+      // ✅ Validar que sea un array
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      console.error('Error al cargar carrito:', error);
+      return [];
+    }
+  });
+
+  // Guardar/eliminar usuario cuando cambia
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('currentUser');
+    }
+  }, [currentUser]);
+
+  // Guardar carrito cuando cambia
+  useEffect(() => {
+    // ✅ Solo guardar si cart es un array válido
+    if (Array.isArray(cart)) {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+  }, [cart]);
+
+  // Función de logout 
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setCart([]); 
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('cart'); 
+  };
+
   const handleAddToCart = (product: Product): void => {
     if (!product.available) return;
     setCart((prev) => [...prev, product])
@@ -42,7 +99,13 @@ function App() {
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen bg-neutral-50">
-        {currentUser && <Navbar User={currentUser} cartCount={cart.length} onLogout={() => setCurrentUser(null)} />}
+        {currentUser && (
+          <Navbar 
+            User={currentUser} 
+            cartCount={cart?.length || 0}  // ✅ Protección contra null/undefined
+            onLogout={handleLogout}
+          />
+        )}
         <main className="flex-grow container mx-auto px-4 py-8">
             <Routes>
               {!currentUser ? (
@@ -56,9 +119,9 @@ function App() {
                   <Route 
                     path="/"
                     element={
-                      currentUser.role === 'VENDOR'
+                      currentUser.role === UserRole.Vendor
                         ? <VendorDash currentUser={currentUser} /> 
-                        : (currentUser.role === 'STUDENT'
+                        : (currentUser.role === UserRole.Student
                         ? <HomePage currentUser={currentUser} products={PRODUCTS} />
                         : <AdminPage currentUser={currentUser}/>)
                     } 

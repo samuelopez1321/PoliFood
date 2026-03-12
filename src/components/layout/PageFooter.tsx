@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 
 export const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
   return (
     <footer className="bg-neutral-900 text-white pt-8 pb-4 px-4 mt-auto">
       <div className="max-w-[1200px] mx-auto grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-8">
@@ -29,7 +27,7 @@ export const Footer = () => {
         </div>
       </div>
       <div className="text-center mt-8 pt-4 border-t border-neutral-800 text-sm text-neutral-100">
-        <p>&copy; {currentYear} PoliFood - Proyecto Ingeniería Web</p>
+        <p>PoliFood - Proyecto Ingeniería Web</p>
       </div>
     </footer>
   );

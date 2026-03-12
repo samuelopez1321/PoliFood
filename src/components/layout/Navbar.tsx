@@ -113,7 +113,7 @@ export default function Navbar({ User, cartCount, onLogout }: NavbarProps) {
                     <button
                       type="button"
                       onClick={handleLogout}
-                      className="w-full px-4 py-2.5 flex items-center justify-center gap-2 text-sm font-medium text-neutral-800 hover:bg-neutral-50 hover:text-primary transition-colors"
+                      className="w-full px-4 py-2.5 flex items-center justify-center gap-2 text-sm font-medium text-neutral-800 hover:bg-neutral-50 hover:text-primary transition-colors cursor-pointer"
                     >
                       <IoLogOutOutline className="text-lg" />
                       LogOut
