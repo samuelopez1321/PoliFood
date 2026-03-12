@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { IoArrowBackOutline } from "react-icons/io5";
+import { IoArrowBackOutline, IoCartOutline } from "react-icons/io5";
 import type { Product } from "../types";
 import { CartItem } from "../components/cart/CartItem";
 import { CartSummary } from "../components/cart/CartSummary";
@@ -49,7 +49,7 @@ export const CartPage = ({
 
   if (cart.length === 0) {
     return (
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="max-w-5xl mx-auto space-y-6 px-4 sm:px-6 lg:px-8">
         <Link
           to="/"
           className="inline-flex items-center gap-2 text-neutral-500 hover:text-primary transition-colors font-medium group"
@@ -60,13 +60,13 @@ export const CartPage = ({
           <span>Volver a las tiendas</span>
         </Link>
 
-        <section className="bg-white rounded-3xl border-2 border-dashed border-neutral-100 shadow-sm px-8 py-20 text-center">
+        <section className="bg-white rounded-3xl border-2 border-dashed border-neutral-100 shadow-sm px-6 sm:px-8 py-16 sm:py-20 text-center">
           <div className="max-w-xl mx-auto space-y-4">
             <div className="text-6xl">🛒</div>
-            <h1 className="text-3xl font-black text-neutral-900">
+            <h1 className="text-2xl sm:text-3xl font-black text-neutral-900">
               Tu carrito está vacío
             </h1>
-            <p className="text-neutral-500 text-lg">
+            <p className="text-neutral-500 text-base sm:text-lg">
               Agrega productos desde las tiendas del campus para verlos aquí y
               continuar con tu pedido.
             </p>
@@ -87,7 +87,7 @@ export const CartPage = ({
   }
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6">
+    <div className="max-w-7xl mx-auto space-y-6 px-4 sm:px-6 lg:px-8">
       <Link
         to="/"
         className="inline-flex items-center gap-2 text-neutral-500 hover:text-primary transition-colors font-medium group"
@@ -95,30 +95,33 @@ export const CartPage = ({
         <div className="p-2 rounded-full group-hover:bg-primary/10 transition-colors">
           <IoArrowBackOutline className="text-xl" />
         </div>
-        <span>Seguir comprando</span>
+        <span className="hidden sm:inline">Seguir comprando</span>
+        <span className="sm:hidden">Volver</span> {/*Si es mobil se pone volver para ahorrar espacio */}
       </Link>
-
-      <section className="bg-white p-8 rounded-3xl border border-neutral-100 shadow-sm">
-        <h1 className="text-4xl font-black text-neutral-900">Tu carrito</h1>
-        <p className="text-neutral-500 mt-2">
+      <section className="bg-white p-6 sm:p-8 rounded-3xl border border-neutral-100 shadow-sm">
+        <div className="flex items-center gap-3 mb-2">
+          <IoCartOutline className="text-3xl text-primary" />
+          <h1 className="text-3xl sm:text-4xl font-black text-neutral-900">
+            Tu carrito
+          </h1>
+        </div>
+        <p className="text-neutral-500 text-sm sm:text-base">
           Revisa tus productos antes de confirmar el pedido.
         </p>
       </section>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        <section className="lg:col-span-2 bg-white rounded-3xl border border-neutral-100 shadow-sm p-6 md:p-8">
-          <div className="flex items-center justify-between mb-6 pb-4 border-b border-neutral-100">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+        <section className="lg:col-span-2 bg-white rounded-3xl border border-neutral-100 shadow-sm p-4 sm:p-6 md:p-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 pb-4 border-b border-neutral-100 gap-2">
             <div>
-              <h2 className="text-2xl font-extrabold text-neutral-900">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-neutral-900">
                 Productos seleccionados
               </h2>
-              <p className="text-sm text-neutral-500 mt-1">
+              <p className="text-xs sm:text-sm text-neutral-500 mt-1">
                 {totalItems} producto{totalItems !== 1 ? "s" : ""} en tu pedido
               </p>
             </div>
           </div>
-
-          <div className="space-y-1">
+          <div className="space-y-3">
             {cartItems.map(({ product, quantity }) => (
               <CartItem
                 key={product.id}
@@ -131,8 +134,7 @@ export const CartPage = ({
             ))}
           </div>
         </section>
-
-        <aside className="lg:sticky lg:top-24">
+        <aside className="lg:sticky lg:top-6">
           <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm p-6">
             <CartSummary
               subtotal={subtotal}
