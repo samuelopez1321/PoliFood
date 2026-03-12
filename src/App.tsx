@@ -13,7 +13,7 @@ import type { Product, User } from './types'
 import { PRODUCTS } from './data/products'
 import { USERS } from './data/users'
 import CartPage from "./pages/CartPage";
-import { Login } from "./pages/Login";
+import LogInPage from "./pages/LogInPage";
 import OrderStatus from "./pages/OrderStatus";
 
 function App() {
@@ -42,13 +42,13 @@ function App() {
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen bg-neutral-50">
-        {currentUser && <Navbar User={currentUser} cartCount={cart.length}/>}
+        {currentUser && <Navbar User={currentUser} cartCount={cart.length} onLogout={() => setCurrentUser(null)} />}
         <main className="flex-grow container mx-auto px-4 py-8">
             <Routes>
               {!currentUser ? (
                 <>
                   <Route path="/signup" element={<SignUpPage />} />
-                  <Route path="/login" element={<Login onLogin={setCurrentUser} />} />
+                  <Route path="/login" element={<LogInPage onLogin={setCurrentUser} />} />
                   <Route path="*" element={<Navigate to="/signup" replace />} />
                 </>
               ) : (

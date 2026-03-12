@@ -5,11 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 import type { User } from "../types";
 import { USERS } from "../data/users";
 
-interface LoginProps {
+interface LogInPageProps {
   onLogin: (user: User) => void;
 }
 
-export const Login = ({ onLogin }: LoginProps) => {
+export default function LogInPage({ onLogin }: LogInPageProps) {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -116,4 +116,4 @@ export const Login = ({ onLogin }: LoginProps) => {
       </section>
     </main>
   );
-};
+}
