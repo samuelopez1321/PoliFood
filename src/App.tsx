@@ -41,10 +41,9 @@ function App() {
   const [cart, setCart] = useState<Product[]>(() => {
     try {
       const saved = localStorage.getItem('cart');
-      if (!saved) return [];  // ✅ Asegurar array vacío
+      if (!saved) return [];
       
       const parsed = JSON.parse(saved);
-      // ✅ Validar que sea un array
       return Array.isArray(parsed) ? parsed : [];
     } catch (error) {
       console.error('Error al cargar carrito:', error);
@@ -52,7 +51,7 @@ function App() {
     }
   });
 
-  // Guardar/eliminar usuario cuando cambia
+  // Guardar usuario cuando cambia
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -63,7 +62,6 @@ function App() {
 
   // Guardar carrito cuando cambia
   useEffect(() => {
-    // ✅ Solo guardar si cart es un array válido
     if (Array.isArray(cart)) {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
@@ -102,7 +100,7 @@ function App() {
         {currentUser && (
           <Navbar 
             User={currentUser} 
-            cartCount={cart?.length || 0}  // ✅ Protección contra null/undefined
+            cartCount={cart?.length || 0}
             onLogout={handleLogout}
           />
         )}
@@ -146,5 +144,4 @@ function App() {
     </BrowserRouter>
   )
 }
-
 export default App;

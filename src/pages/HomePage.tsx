@@ -14,7 +14,7 @@ export const HomePage = ({ currentUser, products }: HomePageProps) => {
       <header className="bg-white rounded-3xl shadow-sm p-10 border border-neutral-100 relative overflow-hidden">
         <div className="relative z-10">
           <h1 className="text-4xl font-black text-neutral-900 mb-3">
-            ¡Hola, <span className="text-primary">{currentUser?.name || 'Estudiante'}</span>! 🍔
+            Hola, <span className="text-primary">{currentUser?.name || 'Estudiante'}</span>
           </h1>
           <p className="text-neutral-600 text-lg max-w-xl">
             Selecciona una de nuestras tiendas del campus para realizar tu pedido.
@@ -24,7 +24,6 @@ export const HomePage = ({ currentUser, products }: HomePageProps) => {
       </header>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {STORES.map((store) => {
-          // REGLA DE ORO: Validar que la tienda tenga productos antes de mostrarla
           const hasProducts = products.some(p => p.storeId === store.storeId);
           if (!hasProducts) return null;
 

@@ -33,13 +33,9 @@ export default function Navbar({ User, cartCount, onLogout }: NavbarProps) {
   return (
     <header className="bg-white border-b border-neutral-100 shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-        
-        {/* Titulo / Logo */}
         <Link to="/" className="text-2xl font-black text-primary tracking-tighter cursor-pointer">
           PoliFood
         </Link>
-
-        {/* Navegación Principal */}
         <nav className="flex items-center gap-8">
           
           <div className="hidden md:flex items-center gap-1">
@@ -123,7 +119,6 @@ export default function Navbar({ User, cartCount, onLogout }: NavbarProps) {
               </div>
             )}
           </div>
-
         </nav>
       </div>
     </header>

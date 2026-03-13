@@ -37,7 +37,6 @@ export const AdminPage = ({currentUser}: AdminPageProps) => {
     };
 
     const handleDeleteVendor = (id: number) => {
-    // Confirmación opcional para evitar borrados accidentales
         if (window.confirm('¿Estás seguro de que deseas eliminar este vendedor?')) {
             //Como desde react no podemos modificar el estado de allUsers, podemos filtrar los eliminados
             setAllUsers(allUsers.filter(user => user.id !== id));
@@ -109,7 +108,6 @@ export const AdminPage = ({currentUser}: AdminPageProps) => {
                         </button>
                     </form>
                 </section>
-
                 {/* Tabla de Vendedores Actuales */}
                 <section className="lg:col-span-2 bg-white rounded-3xl border border-neutral-100 shadow-sm overflow-hidden">
                     <div className="p-6 border-b border-neutral-100">

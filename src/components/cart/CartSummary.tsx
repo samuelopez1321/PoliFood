@@ -1,4 +1,4 @@
-import { Button } from "../../common/UI/Button";
+import { IoCardOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 
 interface CartSummaryProps {
   subtotal: number;
@@ -14,31 +14,43 @@ export const CartSummary = ({
   onCheckout,
 }: CartSummaryProps) => {
   return (
-    <div className="border rounded-lg p-4 flex flex-col gap-3">
-
-      <h2 className="text-lg font-semibold">
-        Resumen de Orden
-      </h2>
-
-      <div className="flex justify-between text-sm">
-        <span>Subtotal</span>
-        <span>${subtotal.toFixed(2)}</span>
+    <div className="space-y-6">
+      <div className="flex items-center gap-2 text-neutral-900">
+        <IoCardOutline className="text-2xl text-primary" />
+        <h2 className="text-xl font-black">Resumen del pedido</h2>
       </div>
+      <div className="space-y-3">
+        <div className="flex justify-between items-center text-neutral-700">
+          <span className="text-sm font-medium">Subtotal</span>
+          <span className="font-bold">${subtotal.toLocaleString()}</span>
+        </div>
 
-      <div className="flex justify-between text-sm">
-        <span>Impuestos</span>
-        <span>${impuestos.toFixed(2)}</span>
+        <div className="flex justify-between items-center text-neutral-700">
+          <span className="text-sm font-medium">Impuestos</span>
+          <span className="font-bold">${impuestos.toLocaleString()}</span>
+        </div>
+
+        <div className="h-px bg-neutral-200"></div>
+
+        <div className="flex justify-between items-center">
+          <span className="text-lg font-black text-neutral-900">Total</span>
+          <span className="text-2xl font-black text-primary">
+            ${total.toLocaleString()}
+          </span>
+        </div>
       </div>
-
-      <div className="flex justify-between font-semibold text-lg border-t pt-2">
-        <span>Total</span>
-        <span>${total.toFixed(2)}</span>
+      <button
+        onClick={onCheckout}
+        className="w-full bg-primary text-white font-black py-4 rounded-2xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group"
+      >
+        <IoCheckmarkCircleOutline className="text-xl" />
+        <span>Finalizar pedido</span>
+      </button>
+      <div className="bg-neutral-50 rounded-xl p-4 border border-neutral-100">
+        <p className="text-xs text-neutral-600 text-center">
+          Al confirmar tu pedido, recibirás un código de seguimiento para rastrear tu entrega en el campus.
+        </p>
       </div>
-
-      <Button onClick={onCheckout}>
-        Checkout
-      </Button>
-
     </div>
   );
 };
