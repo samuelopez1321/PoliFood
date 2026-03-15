@@ -13,7 +13,7 @@ export default function SignUpPage() {
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    function onSubmit(e: React.FormEvent) { // ← Cambiado a FormEvent
+    function onSubmit(e: React.SyntheticEvent) {
         e.preventDefault();
         
         if (!name.trim() || !email.trim() || !password.trim() || !confirmPass.trim()) {

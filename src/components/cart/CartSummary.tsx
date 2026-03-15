@@ -5,6 +5,7 @@ interface CartSummaryProps {
   impuestos?: number;
   total: number;
   onCheckout: () => void;
+  disabled?: boolean;
 }
 
 export const CartSummary = ({
@@ -12,7 +13,9 @@ export const CartSummary = ({
   impuestos = 0,
   total,
   onCheckout,
+  disabled = false
 }: CartSummaryProps) => {
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-neutral-900">
@@ -39,18 +42,27 @@ export const CartSummary = ({
           </span>
         </div>
       </div>
-      <button
+
+      {disabled && (
+        <div className="bg-accent/10 border-l-4 border-accent p-3 rounded-lg">
+          <p className="text-accent-dark text-xs font-bold">
+            Algunos productos ya no están disponibles. Elimínalos para continuar.
+          </p>
+        </div>
+      )}
+
+       <button
         onClick={onCheckout}
-        className="w-full bg-primary text-white font-black py-4 rounded-2xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group"
+        disabled={disabled}
+        className={`w-full font-black py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2 group ${
+          disabled 
+            ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed' 
+            : 'bg-primary text-white hover:bg-primary-dark shadow-primary/20'
+        }`}
       >
         <IoCheckmarkCircleOutline className="text-xl" />
         <span>Finalizar pedido</span>
       </button>
-      <div className="bg-neutral-50 rounded-xl p-4 border border-neutral-100">
-        <p className="text-xs text-neutral-600 text-center">
-          Al confirmar tu pedido, recibirás un código de seguimiento para rastrear tu entrega en el campus.
-        </p>
-      </div>
     </div>
   );
 };

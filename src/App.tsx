@@ -17,6 +17,7 @@ import OrderStatus from "./pages/OrderStatus";
 import { UserRole } from './types';
 
 function App() {
+  //##################################### Ver si hay un usuario logeado con localStorage
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
     try {
       const saved = localStorage.getItem('currentUser');
@@ -37,7 +38,8 @@ function App() {
       return null;
     }
   });
-  
+
+  //####################################### Estado para el carrito con localStorage
   const [cart, setCart] = useState<Product[]>(() => {
     try {
       const saved = localStorage.getItem('cart');
@@ -51,7 +53,7 @@ function App() {
     }
   });
 
-  // Guardar usuario cuando cambia
+  //########################################## Guardar usuario cuando cambia
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -60,14 +62,14 @@ function App() {
     }
   }, [currentUser]);
 
-  // Guardar carrito cuando cambia
+  //########################################## Guardar carrito cuando cambia
   useEffect(() => {
     if (Array.isArray(cart)) {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
   }, [cart]);
 
-  // Función de logout 
+  //######################################### Función de logout 
   const handleLogout = () => {
     setCurrentUser(null);
     setCart([]); 
@@ -75,6 +77,7 @@ function App() {
     localStorage.removeItem('cart'); 
   };
 
+  //#########################################Funciones para el carrito 
   const handleAddToCart = (product: Product): void => {
     if (!product.available) return;
     setCart((prev) => [...prev, product])
@@ -93,6 +96,8 @@ function App() {
   const handleRemoveFromCart = (productId: number) => {
     setCart((prev) => prev.filter((p) => p.id !== productId));
   };
+
+
 
   return (
     <BrowserRouter>
@@ -129,7 +134,7 @@ function App() {
                   <Route path="/vendor/menu" element={<VendorMenuAdmin currentUser={currentUser} />} />
                   <Route 
                     path="/carrito" 
-                    element={<CartPage cart={cart} onIncrease={handleIncreaseQuantity} onDecrease={handleDecreaseQuantity} onRemove={handleRemoveFromCart} onCheckout={() => console.log("Checkout")} />} 
+                    element={<CartPage cart={cart} onIncrease={handleIncreaseQuantity} onDecrease={handleDecreaseQuantity} onRemove={handleRemoveFromCart}/>} 
                   />
                   <Route path="/order/:orderId" element={<OrderStatus />} />
                   <Route path="/mis-pedidos" element={<OrderStatus />} />
