@@ -1,6 +1,5 @@
 import type { Product } from "../../types";
 import { IoTrashOutline, IoAddOutline, IoRemoveOutline } from "react-icons/io5";
-
 interface CartItemProps {
   product: Product;
   quantity: number;

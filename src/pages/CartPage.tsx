@@ -1,5 +1,3 @@
-// src/pages/CartPage.tsx
-
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { IoArrowBackOutline, IoCartOutline, IoCheckmarkCircleOutline, IoTimeOutline } from "react-icons/io5";
@@ -15,6 +13,7 @@ interface CartPageProps {
   onIncrease: (productId: number) => void;
   onDecrease: (productId: number) => void;
   onRemove: (productId: number) => void;
+  onCheckout: () => Promise<number | null>;
 }
 
 interface GroupedCartItem {
@@ -27,6 +26,7 @@ export const CartPage = ({
   onIncrease,
   onDecrease,
   onRemove,
+  onCheckout
 }: CartPageProps) => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
@@ -53,11 +53,9 @@ export const CartPage = ({
   );
 
   const cartItems = Object.values(groupedCartItems);
-  //.reduce recorre el arreglo aplicando la funcion de flecha
   const subtotal = cart.reduce((sum, product) => sum + product.price, 0);
   const impuestos = 0;
   const total = subtotal + impuestos;
-
   const totalItems = cart.length;
 
   // Verificar productos no disponibles
@@ -82,39 +80,44 @@ export const CartPage = ({
     setShowModal(true);
   };
 
-  // Confirmar pedido
+  //Confirmar pedido con la API
   const handleConfirmCheckout = async () => {
     setIsProcessing(true);
 
-    // Simular delay de API
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      //Llamar a onCheckout (que viene de App.tsx)
+      const orderId = await onCheckout();
 
-    // Crear la orden
-    const orderId = 1;
+      setIsProcessing(false);
 
-    setIsProcessing(false);
+      if (orderId) {
+        setShowModal(false);
+        setToast({
+          message: '¡Pedido creado exitosamente!',
+          type: 'success',
+          isVisible: true
+        });
 
-    if (orderId) {
-      // Cerrar modal
-      setShowModal(false);
-
-      // Mostrar toast de éxito
+        // Redirigir después de 1 segundo
+        setTimeout(() => {
+          navigate(`/order/${orderId}`);
+        }, 1000);
+      } else {
+        setToast({
+          message: 'Error al crear el pedido. Intenta de nuevo.',
+          type: 'error',
+          isVisible: true
+        });
+      }
+    } catch (error) {
+      setIsProcessing(false);
       setToast({
-        message: '¡Pedido creado exitosamente!',
-        type: 'success',
-        isVisible: true
-      });
-
-      // Redirigir después de 1 segundo
-      setTimeout(() => {
-        navigate(`/order/${orderId}`);
-      }, 1000);
-    } else {
-      setToast({
-        message: 'Error al crear el pedido. Intenta de nuevo.',
+        message: 'Error inesperado. Por favor intenta de nuevo.',
         type: 'error',
         isVisible: true
       });
+      
+      console.error('Error en checkout:', error);
     }
   };
 

@@ -15,6 +15,7 @@ import CartPage from "./pages/CartPage";
 import LogInPage from "./pages/LogInPage";
 import OrderStatus from "./pages/OrderStatus";
 import { UserRole } from './types';
+import { apiCreateOrder } from './services/services';
 
 function App() {
   //##################################### Ver si hay un usuario logeado con localStorage
@@ -97,7 +98,39 @@ function App() {
     setCart((prev) => prev.filter((p) => p.id !== productId));
   };
 
+// Checkout con Fake API
+  const handleCheckout = async (): Promise<number | null> => {
+    if (cart.length === 0) {
+      console.error('El carrito está vacío');
+      return null;
+    }
 
+    if (!currentUser) {
+      console.error('No hay usuario logueado');
+      return null;
+    }
+    // Obtener storeId del primer producto del carrito
+    const storeId = cart[0].storeId;
+
+    try {
+      // Llamar a la Fake API
+      const resultado = await apiCreateOrder(cart, currentUser.id, storeId);
+
+      if (resultado.success && resultado.data) {
+        // Éxito: limpiar el carrito
+        setCart([]);
+        
+        console.log('Orden creada:', resultado.data);
+        return resultado.data.id;
+      } else {
+        console.error('Error al crear orden:', resultado.error);
+        return null;
+      }
+    } catch (error) {
+      console.error('Error inesperado:', error);
+      return null;
+    }
+  };
 
   return (
     <BrowserRouter>
@@ -134,7 +167,7 @@ function App() {
                   <Route path="/vendor/menu" element={<VendorMenuAdmin currentUser={currentUser} />} />
                   <Route 
                     path="/carrito" 
-                    element={<CartPage cart={cart} onIncrease={handleIncreaseQuantity} onDecrease={handleDecreaseQuantity} onRemove={handleRemoveFromCart}/>} 
+                    element={<CartPage cart={cart} onIncrease={handleIncreaseQuantity} onDecrease={handleDecreaseQuantity} onRemove={handleRemoveFromCart} onCheckout={handleCheckout}/>} 
                   />
                   <Route path="/order/:orderId" element={<OrderStatus />} />
                   <Route path="/mis-pedidos" element={<OrderStatus />} />
