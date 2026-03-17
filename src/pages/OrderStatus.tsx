@@ -1,9 +1,13 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { IoArrowBackOutline, IoCheckmarkCircle, IoReceiptOutline, IoStorefrontOutline, IoTimeOutline } from "react-icons/io5";
 import { ORDERS } from "../data/orders";
 import { PRODUCTS } from "../data/products";
 import { STORES } from "../data/stores";
 import { orderStatuses } from "../types";
+
+interface OrderStatusProps {
+  onRepeatOrder?: (orderId: number) => void;
+}
 
 const statusStyles: Record<string, string> = {
   RECIBIDO: "bg-blue-100 text-blue-700",
@@ -27,8 +31,9 @@ const formatDate = (dateString: string) => {
   });
 };
 
-export const OrderStatus = () => {
+export const OrderStatus = ({ onRepeatOrder }: OrderStatusProps) => {
   const { orderId } = useParams<{ orderId: string }>();
+  const navigate = useNavigate();
 
   const order = orderId
     ? ORDERS.find((currentOrder) => currentOrder.id === Number(orderId))
@@ -74,6 +79,12 @@ export const OrderStatus = () => {
   });
   const STATUS_STEPS = Object.values(orderStatuses);
   const currentStepIndex = STATUS_STEPS.indexOf(order.status as (typeof STATUS_STEPS)[number]);
+
+  const handleRepeatOrder = () => {
+    if (!onRepeatOrder) return;
+    onRepeatOrder(order.id);
+    navigate("/carrito");
+  };
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
@@ -265,16 +276,26 @@ export const OrderStatus = () => {
               ¿Quieres seguir comprando?
             </h3>
             <p className="text-sm text-neutral-500 mb-4">
-              Puedes volver al inicio y explorar otras tiendas del campus.
+              Puedes volver al inicio, explorar otras tiendas o repetir este pedido.
             </p>
 
-            <Link
-              to="/"
-              className="w-full inline-flex items-center justify-center gap-2 text-white bg-primary font-bold px-6 py-4 rounded-2xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
-            >
-              Explorar tiendas
-              <span className="text-xl">→</span>
-            </Link>
+            <div className="flex flex-col gap-3">
+              <Link
+                to="/"
+                className="w-full inline-flex items-center justify-center gap-2 text-white bg-primary font-bold px-6 py-4 rounded-2xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+              >
+                Explorar tiendas
+                <span className="text-xl">→</span>
+              </Link>
+
+              <button
+                type="button"
+                onClick={handleRepeatOrder}
+                className="w-full inline-flex items-center justify-center gap-2 text-primary bg-neutral-100 font-bold px-6 py-4 rounded-2xl hover:bg-neutral-200 transition-all"
+              >
+                Repetir este pedido
+              </button>
+            </div>
           </section>
         </aside>
       </div>

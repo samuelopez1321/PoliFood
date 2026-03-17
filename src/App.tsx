@@ -11,6 +11,7 @@ import { VendorMenuAdmin } from './pages/VendorMenuAdmin';
 import type { Product, User } from './types'
 import { PRODUCTS } from './data/products'
 import { USERS } from './data/users'
+import { ORDERS } from './data/orders'
 import CartPage from "./pages/CartPage";
 import LogInPage from "./pages/LogInPage";
 import OrderStatus from "./pages/OrderStatus";
@@ -98,7 +99,25 @@ function App() {
     setCart((prev) => prev.filter((p) => p.id !== productId));
   };
 
-// Checkout con Fake API
+  const handleRepeatOrder = (orderId: number) => {
+    const order = ORDERS.find((o) => o.id === orderId);
+    if (!order) return;
+
+    const productsToAdd: Product[] = [];
+    order.items.forEach((item) => {
+      const product = PRODUCTS.find((p) => p.id === item.productId);
+      if (product && product.available) {
+        for (let i = 0; i < item.quantity; i += 1) {
+          productsToAdd.push(product);
+        }
+      }
+    });
+
+    if (productsToAdd.length === 0) return;
+    setCart((prev) => [...prev, ...productsToAdd]);
+  };
+
+  // Checkout con Fake API
   const handleCheckout = async (): Promise<number | null> => {
     if (cart.length === 0) {
       console.error('El carrito está vacío');
@@ -169,8 +188,8 @@ function App() {
                     path="/carrito" 
                     element={<CartPage cart={cart} onIncrease={handleIncreaseQuantity} onDecrease={handleDecreaseQuantity} onRemove={handleRemoveFromCart} onCheckout={handleCheckout}/>} 
                   />
-                  <Route path="/order/:orderId" element={<OrderStatus />} />
-                  <Route path="/mis-pedidos" element={<OrderStatus />} />
+                  <Route path="/order/:orderId" element={<OrderStatus onRepeatOrder={handleRepeatOrder} />} />
+                  <Route path="/mis-pedidos" element={<OrderStatus onRepeatOrder={handleRepeatOrder} />} />
                   <Route path="/signup" element={<Navigate to="/" replace />} />
                 </>
               )}

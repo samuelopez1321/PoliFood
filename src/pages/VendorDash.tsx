@@ -25,7 +25,14 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
         return <div className="p-10 text-center">Acceso no autorizado</div>
     }
     const STATUS_STEPS = Object.values(orderStatuses);
-    //Ahora si podemos crear el dashboard
+
+    const handleStatusChange = (orderId: number, status: Order['status']) => {
+        setStoreOrders(prev =>
+            prev.map(order =>
+                order.id === orderId ? { ...order, status } : order
+            )
+        );
+    };
 
     return (
         <div className="space-y-8">
@@ -65,14 +72,15 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
                                 <div className="flex flex-col">
                                     <span className="text-xs font-black text-amber-600 mb-1">
                                         <select
-                                         className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
+                                            className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
+                                            value={order.status}
+                                            onChange={(e) => handleStatusChange(order.id, e.target.value as Order['status'])}
                                         >
-                                                {STATUS_STEPS.map((estado) => (
-                                                    <option key={estado} value={estado}>
-                                                        {estado}
-                                                    </option>
-                                                )
-                                            )}
+                                            {STATUS_STEPS.map((estado) => (
+                                                <option key={estado} value={estado}>
+                                                    {estado}
+                                                </option>
+                                            ))}
                                         </select>
                                     </span>
                                     <span className="text-xs text-neutral-400 flex items-center gap-1">

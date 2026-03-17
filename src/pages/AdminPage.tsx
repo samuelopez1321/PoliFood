@@ -5,6 +5,8 @@ import { STORES } from '../data/stores';
 import { UserRole } from '../types';
 import { IoPersonAddOutline, IoStorefrontOutline, IoTrashOutline } from "react-icons/io5";
 import { CgPassword } from 'react-icons/cg';
+import { Toast } from "../common/UI/Toast";
+import type { ToastType } from "../common/UI/Toast";
 
 interface AdminPageProps {
     currentUser: User | null;
@@ -18,7 +20,12 @@ export const AdminPage = ({currentUser}: AdminPageProps) => {
         email: '',
         password: '',
         storeId:''
-    })
+    });
+    const [toast, setToast] = useState<{ message: string; type: ToastType; isVisible: boolean }>({
+        message: '',
+        type: 'success',
+        isVisible: false
+    });
     const vendors = allUsers.filter(u => u.role === UserRole.Vendor);
     const handleAddVendor = (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -38,10 +45,24 @@ export const AdminPage = ({currentUser}: AdminPageProps) => {
 
     const handleDeleteVendor = (id: number) => {
         if (window.confirm('¿Estás seguro de que deseas eliminar este vendedor?')) {
-            //Como desde react no podemos modificar el estado de allUsers, podemos filtrar los eliminados
             setAllUsers(allUsers.filter(user => user.id !== id));
         }
     };
+
+    const handleResetPassword = (id: number) => {
+        const vendor = allUsers.find(u => u.id === id && u.role === UserRole.Vendor);
+        if (!vendor) return;
+
+        setAllUsers(allUsers.map(user =>
+            user.id === id ? { ...user, password: '1234' } : user
+        ));
+        setToast({
+            message: 'Contraseña restablecida a 1234 para este vendedor.',
+            type: 'success',
+            isVisible: true
+        });
+    };
+
     return (
         <div className="space-y-10">
             <header>
@@ -135,9 +156,16 @@ export const AdminPage = ({currentUser}: AdminPageProps) => {
                                                 {store?.name || 'Sin tienda'}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <button 
-                                                onClick={() => handleDeleteVendor(v.id)} // Llamamos a la función con el ID del vendor
+                                        <td className="px-6 py-4 text-right space-x-1">
+                                            <button
+                                                onClick={() => handleResetPassword(v.id)}
+                                                className="text-neutral-400 hover:text-primary p-2 transition-colors"
+                                                title="Restablecer contraseña"
+                                            >
+                                                <CgPassword size={18} />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDeleteVendor(v.id)}
                                                 className="text-red-400 hover:text-red-600 p-2 transition-colors"
                                                 title="Eliminar Vendedor"
                                             >
@@ -151,6 +179,13 @@ export const AdminPage = ({currentUser}: AdminPageProps) => {
                     </table>
                 </section>
             </div>
+
+            <Toast
+                message={toast.message}
+                type={toast.type}
+                isVisible={toast.isVisible}
+                onClose={() => setToast({ ...toast, isVisible: false })}
+            />
         </div>
     );
 }
