@@ -99,9 +99,8 @@ export const CartPage = ({
         });
 
         // Redirigir después de 1 segundo
-        setTimeout(() => {
-          navigate(`/order/${orderId}`);
-        }, 1000);
+         navigate(`/order/${orderId}`);
+
       } else {
         setToast({
           message: 'Error al crear el pedido. Intenta de nuevo.',
