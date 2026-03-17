@@ -43,7 +43,7 @@ export default function Navbar({ User, cartCount, onLogout }: NavbarProps) {
             {User?.role === 'STUDENT' && (
               <>
                   <Link 
-                    to="/mi-pedido" 
+                    to="/mis-pedidos" 
                     className="px-4 py-2 text-sm font-medium text-neutral-800 hover:text-primary transition-colors"
                   >
                     Mi Pedido

@@ -181,7 +181,6 @@ function App() {
                         : <AdminPage currentUser={currentUser}/>)
                     } 
                   />
-
                   <Route path="/store/:storeId" element={<StorePage products={PRODUCTS} onAddToCart={handleAddToCart} />} />
                   <Route path="/vendor/menu" element={<VendorMenuAdmin currentUser={currentUser} />} />
                   <Route 
