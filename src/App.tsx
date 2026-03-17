@@ -17,6 +17,7 @@ import LogInPage from "./pages/LogInPage";
 import OrderStatus from "./pages/OrderStatus";
 import { UserRole } from './types';
 import { apiCreateOrder } from './services/services';
+import OrdersPage from './pages/OrdersPage';
 
 function App() {
   //##################################### Ver si hay un usuario logeado con localStorage
@@ -99,7 +100,7 @@ function App() {
     setCart((prev) => prev.filter((p) => p.id !== productId));
   };
 
-  const handleRepeatOrder = (orderId: number) => {
+  const handleRepeatOrder = (orderId: number | string) => {
     const order = ORDERS.find((o) => o.id === orderId);
     if (!order) return;
 
@@ -118,7 +119,7 @@ function App() {
   };
 
   // Checkout con Fake API
-  const handleCheckout = async (): Promise<number | null> => {
+  const handleCheckout = async (): Promise<number | string | null> => {
     if (cart.length === 0) {
       console.error('El carrito está vacío');
       return null;
@@ -136,7 +137,7 @@ function App() {
       const resultado = await apiCreateOrder(cart, currentUser.id, storeId);
 
       if (resultado.success && resultado.data) {
-        // Éxito: limpiar el carrito
+        // limpiar el carrito
         setCart([]);
         
         console.log('Orden creada:', resultado.data);
@@ -163,36 +164,53 @@ function App() {
         )}
         <main className="flex-grow container mx-auto px-4 py-8">
             <Routes>
-              {!currentUser ? (
-                <>
-                  <Route path="/signup" element={<SignUpPage />} />
-                  <Route path="/login" element={<LogInPage onLogin={setCurrentUser} />} />
-                  <Route path="*" element={<Navigate to="/signup" replace />} />
-                </>
-              ) : (
-                <>
-                  <Route 
-                    path="/"
-                    element={
-                      currentUser.role === UserRole.Vendor
-                        ? <VendorDash currentUser={currentUser} /> 
-                        : (currentUser.role === UserRole.Student
-                        ? <HomePage currentUser={currentUser} products={PRODUCTS} />
-                        : <AdminPage currentUser={currentUser}/>)
-                    } 
-                  />
-                  <Route path="/store/:storeId" element={<StorePage products={PRODUCTS} onAddToCart={handleAddToCart} />} />
-                  <Route path="/vendor/menu" element={<VendorMenuAdmin currentUser={currentUser} />} />
-                  <Route 
-                    path="/carrito" 
-                    element={<CartPage cart={cart} onIncrease={handleIncreaseQuantity} onDecrease={handleDecreaseQuantity} onRemove={handleRemoveFromCart} onCheckout={handleCheckout}/>} 
-                  />
-                  <Route path="/order/:orderId" element={<OrderStatus onRepeatOrder={handleRepeatOrder} />} />
-                  <Route path="/mis-pedidos" element={<OrderStatus onRepeatOrder={handleRepeatOrder} />} />
-                  <Route path="/signup" element={<Navigate to="/" replace />} />
-                </>
-              )}
-            </Routes>
+  {!currentUser ? (
+    <>
+      <Route path="/signup" element={<SignUpPage />} />
+      <Route path="/login" element={<LogInPage onLogin={setCurrentUser} />} />
+      <Route path="*" element={<Navigate to="/signup" replace />} />
+    </>
+  ) : (
+    <>
+      <Route 
+        path="/"
+        element={
+          currentUser.role === UserRole.Vendor
+            ? <VendorDash currentUser={currentUser} /> 
+            : (currentUser.role === UserRole.Student
+            ? <HomePage currentUser={currentUser} products={PRODUCTS} />
+            : <AdminPage currentUser={currentUser}/>)
+        } 
+      />
+      
+      <Route path="/store/:storeId" element={<StorePage products={PRODUCTS} onAddToCart={handleAddToCart} />} />
+      <Route path="/vendor/menu" element={<VendorMenuAdmin currentUser={currentUser} />} />
+      
+      <Route 
+        path="/carrito" 
+        element={
+          <CartPage 
+            cart={cart} 
+            onIncrease={handleIncreaseQuantity} 
+            onDecrease={handleDecreaseQuantity} 
+            onRemove={handleRemoveFromCart} 
+            onCheckout={handleCheckout}
+          />
+        } 
+      />
+      <Route 
+        path="/order/:orderId" 
+        element={<OrderStatus/>} 
+      />
+      
+      <Route 
+        path="/mis-pedidos" 
+        element={<OrdersPage currentUser={currentUser}/>} 
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </>
+  )}
+</Routes>
         </main>
         
         {currentUser && <Footer />}

@@ -45,7 +45,7 @@ export enum orderStatuses {
 
 
 export interface Order {
-    id: number;
+    id: number | string;
     customerId: number;
     storeId: number;
     status: orderStatuses;

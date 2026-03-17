@@ -98,6 +98,7 @@ export const VendorMenuAdmin = ({currentUser}: VendorMenuAdminProps) => {
                                         value={productForm.price}
                                         onChange={(e) => setProductForm({...productForm, price: e.target.value})}
                                         className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
+                                        required    
                                     />
                                 </div>
                                 <div>
@@ -107,6 +108,7 @@ export const VendorMenuAdmin = ({currentUser}: VendorMenuAdminProps) => {
                                         value={productForm.prepTimeMinutes}
                                         onChange={(e) => setProductForm({...productForm, prepTimeMinutes: e.target.value})}
                                         className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
+                                        required                                    
                                     />
                                 </div>
                             </div>

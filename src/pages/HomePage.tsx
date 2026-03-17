@@ -13,7 +13,9 @@ export const HomePage = ({ currentUser, products }: HomePageProps) => {
   const lastOrder = currentUser && currentUser.role === UserRole.Student
     ? [...ORDERS]
         .filter((order) => order.customerId === currentUser.id)
-        .sort((a, b) => b.id - a.id)[0]
+        .sort((a, b) => {
+                  return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        })[0]
     : null;
 
   return (

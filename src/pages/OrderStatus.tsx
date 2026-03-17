@@ -1,5 +1,3 @@
-// src/pages/OrderStatus.tsx
-
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { apiGetOrderById } from '../services/services';
@@ -7,13 +5,8 @@ import type { Order } from '../types';
 import { PRODUCTS } from '../data/products';
 import { STORES } from '../data/stores';
 
-interface OrderStatusProps {
-  onRepeatOrder?: (orderId: number) => void;
-}
-
-export const OrderStatus = ({ onRepeatOrder }: OrderStatusProps) => {
+export const OrderStatus = () => {
   const { orderId } = useParams<{ orderId: string }>();
-  const navigate = useNavigate();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -30,8 +23,8 @@ export const OrderStatus = ({ onRepeatOrder }: OrderStatusProps) => {
       setError(null);
 
       try {
-        // ✅ Llamar a la API para obtener la orden
-        const resultado = await apiGetOrderById(Number(orderId));
+        // Llamar a la API para obtener la orden
+        const resultado = await apiGetOrderById(orderId);
 
         if (resultado.success && resultado.data) {
           setOrder(resultado.data);
@@ -84,7 +77,7 @@ export const OrderStatus = ({ onRepeatOrder }: OrderStatusProps) => {
   }
 
   // Error
-  if (error) {
+  if (error || !order) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-12">
         <div className="bg-white rounded-3xl border-2 border-dashed border-neutral-100 shadow-sm p-12 text-center">
@@ -104,36 +97,8 @@ export const OrderStatus = ({ onRepeatOrder }: OrderStatusProps) => {
       </div>
     );
   }
-
-  // ❌ No order (aunque no debería pasar si hay error)
-  if (!order) {
-    return (
-      <div className="max-w-3xl mx-auto px-4 py-12">
-        <div className="bg-white rounded-3xl border-2 border-dashed border-neutral-100 shadow-sm p-12 text-center">
-          <div className="text-6xl mb-4">📦</div>
-          <h1 className="text-2xl font-black text-neutral-900 mb-2">
-            Orden no encontrada
-          </h1>
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-2xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20"
-          >
-            Volver al inicio
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  // ✅ SUCCESS - Mostrar orden
+  //Mostrar orden
   const store = STORES.find(s => s.storeId === order.storeId);
-
-  const handleRepeatOrder = () => {
-    if (!onRepeatOrder) return;
-    onRepeatOrder(order.id);
-    navigate('/carrito');
-  };
-
   // Obtener productos de la orden
   const orderProducts = order.items.map(item => {
     const product = PRODUCTS.find(p => p.id === item.productId);
@@ -233,15 +198,6 @@ export const OrderStatus = ({ onRepeatOrder }: OrderStatusProps) => {
         >
           Volver al inicio
         </Link>
-        {onRepeatOrder && (
-          <button
-            type="button"
-            onClick={handleRepeatOrder}
-            className="w-full text-center text-primary bg-neutral-100 font-bold px-6 py-4 rounded-2xl hover:bg-neutral-200 transition-all"
-          >
-            Repetir este pedido
-          </button>
-        )}
       </div>
     </div>
   );

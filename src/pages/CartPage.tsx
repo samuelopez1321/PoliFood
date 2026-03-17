@@ -13,7 +13,7 @@ interface CartPageProps {
   onIncrease: (productId: number) => void;
   onDecrease: (productId: number) => void;
   onRemove: (productId: number) => void;
-  onCheckout: () => Promise<number | null>;
+  onCheckout: () => Promise<number | string| null>;
 }
 
 interface GroupedCartItem {

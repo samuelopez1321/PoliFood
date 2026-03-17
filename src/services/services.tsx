@@ -113,7 +113,7 @@ export async function apiCreateOrder(
   }
 }
 
-export async function apiGetOrderById(id: number): Promise<ApiResponse<Order>> {
+export async function apiGetOrderById(id: number | string): Promise<ApiResponse<Order>> {
   try {
     //esperar a que json server cargue por que es como lento
     await new Promise(resolve => setTimeout(resolve, 5000));
@@ -125,9 +125,7 @@ export async function apiGetOrderById(id: number): Promise<ApiResponse<Order>> {
         error: 'Orden no encontrada'
       };
     }
-    
     const data = await response.json();
-    
     return {
       success: true,
       data: data
