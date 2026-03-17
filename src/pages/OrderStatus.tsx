@@ -1,14 +1,19 @@
 // src/pages/OrderStatus.tsx
 
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { apiGetOrderById } from '../services/services';
 import type { Order } from '../types';
 import { PRODUCTS } from '../data/products';
 import { STORES } from '../data/stores';
 
-export const OrderStatus = () => {
+interface OrderStatusProps {
+  onRepeatOrder?: (orderId: number) => void;
+}
+
+export const OrderStatus = ({ onRepeatOrder }: OrderStatusProps) => {
   const { orderId } = useParams<{ orderId: string }>();
+  const navigate = useNavigate();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -123,6 +128,12 @@ export const OrderStatus = () => {
   // ✅ SUCCESS - Mostrar orden
   const store = STORES.find(s => s.storeId === order.storeId);
 
+  const handleRepeatOrder = () => {
+    if (!onRepeatOrder) return;
+    onRepeatOrder(order.id);
+    navigate('/carrito');
+  };
+
   // Obtener productos de la orden
   const orderProducts = order.items.map(item => {
     const product = PRODUCTS.find(p => p.id === item.productId);
@@ -214,13 +225,24 @@ export const OrderStatus = () => {
         </div>
       </section>
 
-      {/* Botón volver */}
-      <Link
-        to="/"
-        className="block text-center bg-white text-neutral-700 font-bold px-6 py-4 rounded-2xl hover:bg-neutral-50 transition-all border border-neutral-200"
-      >
-        Volver al inicio
-      </Link>
+      {/* Botones: volver y repetir pedido */}
+      <div className="flex flex-col gap-3">
+        <Link
+          to="/"
+          className="block text-center bg-white text-neutral-700 font-bold px-6 py-4 rounded-2xl hover:bg-neutral-50 transition-all border border-neutral-200"
+        >
+          Volver al inicio
+        </Link>
+        {onRepeatOrder && (
+          <button
+            type="button"
+            onClick={handleRepeatOrder}
+            className="w-full text-center text-primary bg-neutral-100 font-bold px-6 py-4 rounded-2xl hover:bg-neutral-200 transition-all"
+          >
+            Repetir este pedido
+          </button>
+        )}
+      </div>
     </div>
   );
 };
