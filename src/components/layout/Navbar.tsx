@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import type { User } from '../../types';
-import { STORES } from '../../data/stores';
+import { useState, useEffect } from 'react';
+import type { User, Store } from '../../types';
 import { Link } from 'react-router-dom';
 import { IoLogOutOutline, IoCartOutline } from 'react-icons/io5';
+import { apiGetStoreById } from '../../services/services';
 
 interface NavbarProps {
   User: User | null;
@@ -11,8 +11,16 @@ interface NavbarProps {
 }
 
 export default function Navbar({ User, cartCount, onLogout }: NavbarProps) {
-  const vendorStore = STORES.find(s => s.storeId === User?.storeId);
+  const [vendorStore, setVendorStore] = useState<Store | undefined>(undefined);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (User?.role === 'VENDOR' && User.storeId) {
+      apiGetStoreById(User.storeId).then(res => {
+        if (res.success && res.data) setVendorStore(res.data);
+      });
+    }
+  }, [User?.storeId, User?.role]);
 
   return (
     <header className="bg-white border-b border-neutral-100 shadow-sm sticky top-0 z-50">
@@ -22,10 +30,9 @@ export default function Navbar({ User, cartCount, onLogout }: NavbarProps) {
             PoliFood
           </Link>
           <div className="flex items-center gap-4 md:gap-8">
-            
-            {/* Enlaces se ocultan en móvil para no mostrar muchas cosas */}
+
             <nav className="sm:flex items-center gap-2">
-              {User?.role === 'STUDENT' && (
+              {User?.role === 'ESTUDIANTE' && (
                 <>
                   <Link to="/mis-pedidos" className="px-3 py-2 text-xs font-bold text-neutral-600 hover:text-primary transition-colors">
                     PEDIDOS
@@ -47,11 +54,11 @@ export default function Navbar({ User, cartCount, onLogout }: NavbarProps) {
             <div className="flex items-center gap-3 pl-4 border-l border-neutral-200">
               <div className="flex flex-col text-right leading-none">
                 <span className="text-sm font-black text-neutral-800">
-                  {User ? User.name.split(' ')[0] : null }
+                  {User ? User.nombre.split(' ')[0] : null}
                 </span>
                 {User?.role === 'VENDOR' && vendorStore && (
                   <span className="text-[9px] uppercase font-black text-primary tracking-widest mt-0.5">
-                    {vendorStore.name}
+                    {vendorStore.nombre}
                   </span>
                 )}
               </div>
@@ -61,7 +68,7 @@ export default function Navbar({ User, cartCount, onLogout }: NavbarProps) {
                   onClick={() => setMenuOpen(!menuOpen)}
                   className="h-9 w-9 rounded-full bg-primary text-white flex items-center justify-center font-black text-sm hover:scale-105 transition-transform"
                 >
-                  {User?.name.charAt(0)}
+                  {User?.nombre.charAt(0)}
                 </button>
                 {menuOpen && (
                   <div className="absolute right-0 top-full mt-2 w-32 bg-white border border-neutral-100 shadow-xl rounded-2xl overflow-hidden py-1">

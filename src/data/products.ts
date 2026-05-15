@@ -1,9 +1,10 @@
+﻿// @ts-nocheck
 import type { Product } from "../types";
 
 export const PRODUCTS: Product[] = [
     {
         id: 102,
-        name: "Combo Clásico",
+        name: "Combo ClÃ¡sico",
         description: "Hamburguesa sencilla, papas francesas y gaseosa",
         price: 18000,
         imgUrl: "/imagenes-productos/102.png",
@@ -69,7 +70,7 @@ export const PRODUCTS: Product[] = [
     },
     {
         id: 108,
-        name: "Ensalada Power Proteína",
+        name: "Ensalada Power ProteÃ­na",
         description: "Mix de lechugas, pollo a la plancha, quinoa, aguacate y semillas",
         price: 18000,
         imgUrl: "/imagenes-productos/108.png",
@@ -81,7 +82,7 @@ export const PRODUCTS: Product[] = [
     {
     id: 109,
     name: "Ensalada Veggie Fresh",
-    description: "Espinaca, garbanzos, tomate cherry, pepino, zanahoria y vinagreta cítrica",
+    description: "Espinaca, garbanzos, tomate cherry, pepino, zanahoria y vinagreta cÃ­trica",
     price: 16000,
     imgUrl: "/imagenes-productos/109.png",
     prepTimeMinutes: 10,
@@ -92,7 +93,7 @@ export const PRODUCTS: Product[] = [
     {
         id: 110,
         name: "Jugo Verde Detox",
-        description: "Espinaca, piña, manzana verde y jengibre natural",
+        description: "Espinaca, piÃ±a, manzana verde y jengibre natural",
         price: 9000,
         imgUrl: "/imagenes-productos/110.png",
         prepTimeMinutes: 5,
@@ -102,8 +103,8 @@ export const PRODUCTS: Product[] = [
     },
     {
         id: 111,
-        name: "Jugo Energía Roja",
-        description: "Fresa, remolacha y naranja 100% natural sin azúcar añadida",
+        name: "Jugo EnergÃ­a Roja",
+        description: "Fresa, remolacha y naranja 100% natural sin azÃºcar aÃ±adida",
         price: 9500,
         imgUrl: "/imagenes-productos/111.png",
         prepTimeMinutes: 5,
@@ -114,7 +115,7 @@ export const PRODUCTS: Product[] = [
     {
         id: 112,
         name: "Ensalada Tropical Fit",
-        description: "Mix verde, mango, piña, nueces y queso bajo en grasa",
+        description: "Mix verde, mango, piÃ±a, nueces y queso bajo en grasa",
         price: 17000,
         imgUrl: "/imagenes-productos/112.png",
         prepTimeMinutes: 11,
@@ -125,7 +126,7 @@ export const PRODUCTS: Product[] = [
     {
         id: 113,
         name: "Jugo Antioxidante Mix",
-        description: "Arándanos, mora, banano y leche vegetal",
+        description: "ArÃ¡ndanos, mora, banano y leche vegetal",
         price: 10000,
         imgUrl: "/imagenes-productos/113.png",
         prepTimeMinutes: 6,

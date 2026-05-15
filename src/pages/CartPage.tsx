@@ -10,10 +10,10 @@ import type { ToastType } from '../common/UI/Toast';
 
 interface CartPageProps {
   cart: Product[];
-  onIncrease: (productId: number) => void;
-  onDecrease: (productId: number) => void;
-  onRemove: (productId: number) => void;
-  onCheckout: () => Promise<number | string| null>;
+  onIncrease: (productId: string) => void;
+  onDecrease: (productId: string) => void;
+  onRemove: (productId: string) => void;
+  onCheckout: () => Promise<string | null>;
 }
 
 interface GroupedCartItem {
@@ -37,12 +37,12 @@ export const CartPage = ({
     isVisible: false
   });
 
-  const groupedCartItems = cart.reduce<Record<number, GroupedCartItem>>(
+  const groupedCartItems = cart.reduce<Record<string, GroupedCartItem>>(
     (acc, product) => {
-      if (acc[product.id]) {
-        acc[product.id].quantity += 1;
+      if (acc[product.productId]) {
+        acc[product.productId].quantity += 1;
       } else {
-        acc[product.id] = {
+        acc[product.productId] = {
           product,
           quantity: 1,
         };
@@ -59,7 +59,7 @@ export const CartPage = ({
   const totalItems = cart.length;
 
   // Verificar productos no disponibles
-  const unavailableProducts = cart.filter(p => !p.available);
+  const unavailableProducts = cart.filter(p => !p.isAvailable);
   const hasUnavailableProducts = unavailableProducts.length > 0;
 
   // Calcular tiempo estimado de preparación
@@ -202,7 +202,7 @@ export const CartPage = ({
             <div className="space-y-3">
               {cartItems.map(({ product, quantity }) => (
                 <CartItem
-                  key={product.id}
+                  key={product.productId}
                   product={product}
                   quantity={quantity}
                   onIncrease={onIncrease}

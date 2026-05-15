@@ -1,56 +1,57 @@
 export enum UserRole {
-    Student = "STUDENT",
+    Student = "ESTUDIANTE",
     Vendor = "VENDOR",
     Admin = "ADMIN"
 }
 
-
 export interface User {
-    id: number;
-    name: string;
+    id: string;
+    nombre: string;
     role: UserRole;
     email: string;
-    password: string;
-    storeId?: number; // Solo para vendors
+    storeId?: string;
 }
 
 export interface Product {
-    id: number;
+    productId: string;
     name: string;
     description: string;
     price: number;
-    imgUrl: string
+    imageUrl: string;
     prepTimeMinutes: number;
-    available: boolean;
-    storeId: number;
+    storeId: string;
     category: string;
+    isAvailable: boolean;
 }
 
 export interface Store {
-    storeId: number;
-    name: string;
+    storeId: string;
+    nombre: string;
+    available: number;
     categories: string[];
 }
 
-export interface OrderItem {
-    productId: number;
+export interface OrderItemResponse {
+    productId: string;
+    productName: string;
     quantity: number;
+    price: number;
 }
+
 export enum orderStatuses {
     Recibido = "RECIBIDO",
-    Preparando = "Preparando",
-    EnCamino = "En Camino",
-    Enviado = "Enviado"
+    Preparando = "PREPARANDO",
+    EnCamino = "EN_CAMINO",
+    Enviado = "ENVIADO"
 }
 
-
 export interface Order {
-    id: number | string;
-    customerId: number;
-    storeId: number;
+    orderId: string;
+    studentId: string;
+    storeId: string;
     status: orderStatuses;
-    items: OrderItem[];
+    items: OrderItemResponse[];
     total: number;
-    createdAt: string; // date string
+    createdAt: string;
     etaMinutes: number;
 }

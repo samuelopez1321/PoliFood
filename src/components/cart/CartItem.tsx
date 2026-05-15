@@ -1,11 +1,12 @@
 import type { Product } from "../../types";
 import { IoTrashOutline, IoAddOutline, IoRemoveOutline } from "react-icons/io5";
+
 interface CartItemProps {
   product: Product;
   quantity: number;
-  onIncrease: (productId: number) => void;
-  onDecrease: (productId: number) => void;
-  onRemove: (productId: number) => void;
+  onIncrease: (productId: string) => void;
+  onDecrease: (productId: string) => void;
+  onRemove: (productId: string) => void;
 }
 
 export const CartItem = ({
@@ -20,8 +21,8 @@ export const CartItem = ({
   return (
     <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 bg-neutral-50 rounded-2xl hover:bg-neutral-100 transition-colors">
       <div className="w-20 h-20 sm:w-16 sm:h-16 flex-shrink-0 bg-white rounded-xl overflow-hidden border border-neutral-200">
-        <img 
-          src={product.imgUrl} 
+        <img
+          src={product.imageUrl}
           alt={product.name}
           className="w-full h-full object-cover"
         />
@@ -35,7 +36,7 @@ export const CartItem = ({
       <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6">
         <div className="flex items-center gap-2 bg-white rounded-xl border border-neutral-200 p-1">
           <button
-            onClick={() => onDecrease(product.id)}
+            onClick={() => onDecrease(product.productId)}
             className="w-8 h-8 flex items-center justify-center text-neutral-600 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
             aria-label="Disminuir cantidad"
           >
@@ -47,7 +48,7 @@ export const CartItem = ({
           </span>
 
           <button
-            onClick={() => onIncrease(product.id)}
+            onClick={() => onIncrease(product.productId)}
             className="w-8 h-8 flex items-center justify-center text-neutral-600 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
             aria-label="Aumentar cantidad"
           >
@@ -62,7 +63,7 @@ export const CartItem = ({
           </div>
 
           <button
-            onClick={() => onRemove(product.id)}
+            onClick={() => onRemove(product.productId)}
             className="w-9 h-9 flex items-center justify-center text-neutral-400 hover:text-accent hover:bg-accent/10 rounded-lg transition-colors"
             aria-label="Eliminar producto"
           >

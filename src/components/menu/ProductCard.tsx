@@ -1,4 +1,3 @@
-import type { CgUnavailable } from 'react-icons/cg';
 import type { Product } from '../../types';
 import { FaClock } from "react-icons/fa6";
 import { Button } from '../../common/UI/Button';
@@ -10,13 +9,13 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
     return (
-        <div className={`relative flex flex-col bg-white rounded-2xl shadow-sm border border-neutral-100 overflow-hidden transition-all hover:shadow-md ${!product.available ? 'grayscale opacity-75' : ''}`}>
+        <div className={`relative flex flex-col bg-white rounded-2xl shadow-sm border border-neutral-100 overflow-hidden transition-all hover:shadow-md ${!product.isAvailable ? 'grayscale opacity-75' : ''}`}>
             <div className="aspect-video w-full overflow-hidden bg-neutral-100">
-                <img src={product.imgUrl} alt={product.name} className="w-full h-full object-cover"/>
+                <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover"/>
 
-                {!product.available && 
+                {!product.isAvailable &&
                 (<span className="absolute top-2 right-2 bg-accent text-white text-xs font-bold px-2 py-1 rounded">
-                AGOTADO 
+                AGOTADO
                 </span>
             )}
             </div>
@@ -34,11 +33,11 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
                 </div>
                 <Button
                     variant = 'primary'
-                    disabled = {!product.available}
+                    disabled = {!product.isAvailable}
                     onClick = {() => onAddToCart(product)}
                     className='mt-4 w-full'
                 >
-                    {product.available ? 'Agregar al carrito' : 'No disponible'}
+                    {product.isAvailable ? 'Agregar al carrito' : 'No disponible'}
                 </Button>
             </div>
         </div>

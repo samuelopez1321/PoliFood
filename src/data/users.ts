@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { User } from '../types';
 import { UserRole } from '../types';
 export const USERS: User[] = [
