@@ -34,7 +34,7 @@ export const HomePage = ({ currentUser }: HomePageProps) => {
             Hola, <span className="text-primary">{currentUser?.nombre || 'Estudiante'}</span>
           </h1>
           <p className="text-neutral-600 text-lg max-w-xl">
-            Selecciona una de nuestras tiendas del campus para realizar tu pedido.
+            Selecciona una de nuestras tiendas <b>abiertas</b> del campus para realizar tu pedido.
           </p>
         </div>
         <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full -mr-20 -mt-20"></div>
@@ -48,10 +48,19 @@ export const HomePage = ({ currentUser }: HomePageProps) => {
           >
             <div>
               <div className="flex justify-between items-start mb-4">
-                <h2 className="text-3xl font-extrabold text-neutral-800 group-hover:text-primary transition-colors">
-                  {store.nombre}
-                </h2>
-                <span className="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded-md uppercase">
+                <div className="flex items-center gap-3">
+                  {store.logoUrl ? (
+                    <img src={store.logoUrl} alt={store.nombre} className="h-14 w-14 rounded-2xl object-cover border border-neutral-100 shadow-sm flex-shrink-0" />
+                  ) : (
+                    <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary text-2xl font-black flex-shrink-0">
+                      {store.nombre.charAt(0)}
+                    </div>
+                  )}
+                  <h2 className="text-2xl font-extrabold text-neutral-800 group-hover:text-primary transition-colors leading-tight">
+                    {store.nombre}
+                  </h2>
+                </div>
+                <span className="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded-md uppercase flex-shrink-0">
                   Abierta
                 </span>
               </div>

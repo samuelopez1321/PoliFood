@@ -87,6 +87,38 @@ export async function apiGetStoreById(storeId: string): Promise<ApiResponse<Stor
   }
 }
 
+export async function apiCreateStore(dto: {
+  nombre: string; categories: string[]; logoUrl?: string;
+}): Promise<ApiResponse<Store>> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/stores`, {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify(dto),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      return { success: false, error: err.message ?? 'Error al crear tienda' };
+    }
+    return { success: true, data: await res.json() };
+  } catch {
+    return { success: false, error: 'No se pudo conectar al servidor' };
+  }
+}
+
+export async function apiDeactivateStore(storeId: string): Promise<ApiResponse<boolean>> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/stores/${storeId}`, {
+      method: 'PATCH',
+      headers: authHeaders(),
+    });
+    if (!res.ok) return { success: false, error: 'Error al desactivar tienda' };
+    return { success: true, data: true };
+  } catch {
+    return { success: false, error: 'No se pudo conectar al servidor' };
+  }
+}
+
 // ── Products ───────────────────────────────────────────────────
 export async function apiGetProductsByStore(storeId: string): Promise<ApiResponse<Product[]>> {
   try {

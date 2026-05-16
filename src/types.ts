@@ -29,6 +29,7 @@ export interface Store {
     nombre: string;
     available: number;
     categories: string[];
+    logoUrl?: string;
 }
 
 export interface OrderItemResponse {

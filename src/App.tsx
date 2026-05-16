@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import { VendorDash } from './pages/VendorDash';
 import { StorePage } from './pages/StorePage';
 import { AdminPage } from './pages/AdminPage';
+import { StoresPage } from './pages/StoresPage';
 import { VendorMenuAdmin } from './pages/VendorMenuAdmin';
 import type { Product, User } from './types'
 import CartPage from "./pages/CartPage";
@@ -123,6 +124,9 @@ function App() {
                 />
                 <Route path="/store/:storeId" element={<StorePage onAddToCart={handleAddToCart} />} />
                 <Route path="/vendor/menu" element={<VendorMenuAdmin currentUser={currentUser} />} />
+                {currentUser.role === UserRole.Admin && (
+                  <Route path="/admin/stores" element={<StoresPage />} />
+                )}
                 <Route
                   path="/carrito"
                   element={

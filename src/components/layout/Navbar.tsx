@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type { User, Store } from '../../types';
 import { Link } from 'react-router-dom';
 import { IoLogOutOutline, IoCartOutline } from 'react-icons/io5';
-import { apiGetStoreById } from '../../services/services';
+import { apiGetStoreById, apiDeactivateStore } from '../../services/services';
 
 interface NavbarProps {
   User: User | null;
@@ -13,6 +13,14 @@ interface NavbarProps {
 export default function Navbar({ User, cartCount, onLogout }: NavbarProps) {
   const [vendorStore, setVendorStore] = useState<Store | undefined>(undefined);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleToggleStore = async () => {
+    if (!vendorStore) return;
+    const res = await apiDeactivateStore(vendorStore.storeId);
+    if (res.success) {
+      setVendorStore({ ...vendorStore, available: vendorStore.available === 1 ? 0 : 1 });
+    }
+  };
 
   useEffect(() => {
     if (User?.role === 'VENDOR' && User.storeId) {
@@ -48,6 +56,25 @@ export default function Navbar({ User, cartCount, onLogout }: NavbarProps) {
                 <>
                   <Link to="/" className="px-3 py-2 text-xs font-bold text-neutral-600 hover:text-primary">VENTAS</Link>
                   <Link to="/vendor/menu" className="px-3 py-2 text-xs font-bold text-neutral-600 hover:text-primary">MENÚ</Link>
+                  {vendorStore && (
+                    <button
+                      onClick={handleToggleStore}
+                      className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-tighter transition-colors ${
+                        vendorStore.available === 1
+                          ? 'bg-green-100 text-green-600 hover:bg-green-200'
+                          : 'bg-red-100 text-red-600 hover:bg-red-200'
+                      }`}
+                    >
+                      {vendorStore.available === 1 ? 'Abierto' : 'Cerrado'}
+                    </button>
+                  )}
+                </>
+              )}
+
+              {User?.role === 'ADMIN' && (
+                <>
+                  <Link to="/" className="px-3 py-2 text-xs font-bold text-neutral-600 hover:text-primary">VENDEDORES</Link>
+                  <Link to="/admin/stores" className="px-3 py-2 text-xs font-bold text-neutral-600 hover:text-primary">TIENDAS</Link>
                 </>
               )}
             </nav>
