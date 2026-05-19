@@ -59,7 +59,7 @@ export default function Navbar({ User, cartCount, onLogout }: NavbarProps) {
                   {vendorStore && (
                     <button
                       onClick={handleToggleStore}
-                      className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-tighter transition-colors ${
+                      className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-tighter cursor-pointer transition-colors ${
                         vendorStore.available === 1
                           ? 'bg-green-100 text-green-600 hover:bg-green-200'
                           : 'bg-red-100 text-red-600 hover:bg-red-200'
@@ -93,7 +93,7 @@ export default function Navbar({ User, cartCount, onLogout }: NavbarProps) {
               <div className="relative">
                 <button
                   onClick={() => setMenuOpen(!menuOpen)}
-                  className="h-9 w-9 rounded-full bg-primary text-white flex items-center justify-center font-black text-sm hover:scale-105 transition-transform"
+                  className="h-9 w-9 rounded-full bg-primary text-white flex items-center justify-center font-black text-sm hover:scale-105 transition-transform cursor-pointer"
                 >
                   {User?.nombre.charAt(0)}
                 </button>

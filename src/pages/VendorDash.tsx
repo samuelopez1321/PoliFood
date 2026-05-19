@@ -8,6 +8,20 @@ interface VendorDashProps {
   currentUser: User | null;
 }
 
+const isToday = (dateStr: string) => {
+  const d = new Date(dateStr);
+  const now = new Date();
+  return d.getDate() === now.getDate() &&
+    d.getMonth() === now.getMonth() &&
+    d.getFullYear() === now.getFullYear();
+};
+
+const formatDate = (dateStr: string) =>
+  new Date(dateStr).toLocaleString('es-CO', {
+    day: 'numeric', month: 'long', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  });
+
 export const VendorDash = ({ currentUser }: VendorDashProps) => {
   const [storeData, setStoreData] = useState<Store | undefined>(undefined);
   const [storeOrders, setStoreOrders] = useState<Order[]>([]);
@@ -57,21 +71,16 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
     }
   };
 
-  return (
-    <div className="space-y-8">
-      <header className="bg-white p-6 sm:p-8 rounded-3xl border border-neutral-100 shadow-sm">
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-black text-neutral-900">{storeData.nombre}</h1>
-          <p className="text-neutral-500">Panel de administracion de pedidos</p>
-        </div>
-      </header>
+  const todayOrders = storeOrders.filter(o => isToday(o.createdAt));
+  const previousOrders = storeOrders.filter(o => !isToday(o.createdAt));
 
-      <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
+  const OrderTable = ({ orders }: { orders: Order[] }) => (
+    <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm overflow-hidden">
+      <div className="overflow-x-auto">
         <table className="w-full text-left min-w-[780px]">
           <thead className="bg-neutral-50 text-neutral-500 text-xs uppercase font-bold">
             <tr>
-              <th className="px-6 py-4">ID / Hora</th>
+              <th className="px-6 py-4">ID / Fecha</th>
               <th className="px-6 py-4">Estudiante</th>
               <th className="px-6 py-4">Pedido</th>
               <th className="px-6 py-4">Estado / ETA</th>
@@ -79,13 +88,13 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-neutral-100">
-            {storeOrders.map((order) => (
+            {orders.map((order) => (
               <tr key={order.orderId} className="hover:bg-neutral-50/50 transition-colors">
                 <td className="px-6 py-4">
                   <p className="font-bold text-primary">#{order.orderId.slice(0, 8)}</p>
                   <p className="text-xs text-neutral-400 flex items-center gap-1 mt-0.5">
                     <IoTimeOutline />
-                    {new Date(order.createdAt).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}
+                    {formatDate(order.createdAt)}
                   </p>
                 </td>
                 <td className="px-6 py-4 text-sm">
@@ -106,7 +115,7 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
                 <td className="px-6 py-4">
                   <div className="flex flex-col">
                     <select
-                      className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
+                      className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none cursor-pointer"
                       value={order.status}
                       onChange={(e) => handleStatusChange(order.orderId, e.target.value as Order['status'])}
                     >
@@ -126,8 +135,38 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
             ))}
           </tbody>
         </table>
-        </div>
       </div>
+    </div>
+  );
+
+  return (
+    <div className="space-y-8">
+      <header className="bg-white p-6 sm:p-8 rounded-3xl border border-neutral-100 shadow-sm">
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-black text-neutral-900">{storeData.nombre}</h1>
+          <p className="text-neutral-500">Panel de administracion de pedidos</p>
+        </div>
+      </header>
+
+      {todayOrders.length > 0 && (
+        <div className="space-y-3">
+          <h2 className="text-sm font-black text-neutral-400 uppercase tracking-widest px-1">Hoy</h2>
+          <OrderTable orders={todayOrders} />
+        </div>
+      )}
+
+      {previousOrders.length > 0 && (
+        <div className="space-y-3">
+          <h2 className="text-sm font-black text-neutral-400 uppercase tracking-widest px-1">Anteriores</h2>
+          <OrderTable orders={previousOrders} />
+        </div>
+      )}
+
+      {storeOrders.length === 0 && (
+        <div className="bg-white rounded-3xl border-2 border-dashed border-neutral-100 p-12 text-center">
+          <p className="text-neutral-400 font-medium">No hay pedidos aún.</p>
+        </div>
+      )}
     </div>
   );
 };

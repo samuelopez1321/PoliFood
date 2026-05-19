@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { User, Store } from '../types';
 import { UserRole } from '../types';
-import { IoPersonAddOutline, IoStorefrontOutline, IoTrashOutline } from "react-icons/io5";
+import { IoPersonAddOutline, IoStorefrontOutline, IoTrashOutline, IoMailOutline } from "react-icons/io5";
 import { Toast } from "../common/UI/Toast";
 import type { ToastType } from "../common/UI/Toast";
 import { apiGetVendors, apiGetStores, apiCreateVendor, apiDeactivateVendor } from '../services/services';
@@ -110,10 +110,11 @@ return (
             <h2 className="text-xl font-bold text-neutral-800">Vendedores Activos</h2>
           </div>
           <div className="overflow-x-auto">
-          <table className="w-full text-left min-w-[480px]">
+          <table className="w-full text-left min-w-[580px]">
             <thead className="bg-neutral-50 text-neutral-400 text-xs uppercase">
               <tr>
                 <th className="px-6 py-4">Nombre</th>
+                <th className="px-6 py-4">Correo</th>
                 <th className="px-6 py-4">Tienda Asignada</th>
                 <th className="px-6 py-4 text-right">Acciones</th>
               </tr>
@@ -125,6 +126,12 @@ return (
                   <tr key={v.id} className="hover:bg-neutral-50/50">
                     <td className="px-6 py-4 font-bold text-neutral-800">{v.nombre}</td>
                     <td className="px-6 py-4">
+                      <span className="flex items-center gap-2 text-sm text-neutral-500">
+                        <IoMailOutline className="text-primary flex-shrink-0" />
+                        {v.email}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
                       <span className="flex items-center gap-2 text-sm text-neutral-600">
                         <IoStorefrontOutline className="text-primary" />
                         {store?.nombre || 'Sin tienda'}
@@ -132,7 +139,7 @@ return (
                     </td>
                     <td className="px-6 py-4 text-right space-x-1">
                       <button onClick={() => handleDeleteVendor(v.id)}
-                        className="text-red-400 hover:text-red-600 p-2 transition-colors" title="Eliminar Vendedor">
+                        className="text-red-400 hover:text-red-600 p-2 cursor-pointer transition-colors" title="Eliminar Vendedor">
                         <IoTrashOutline size={18} />
                       </button>
                     </td>

@@ -15,7 +15,7 @@ export const Button = ({
     disabled,
     ...props
 }: ButtonProps) => {
-    const baseStyles = "px-4 py-2 rounded-lg font-bold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm uppercase tracking-wide";
+    const baseStyles = "px-4 py-2 rounded-lg font-bold transition-all duration-200 active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm uppercase tracking-wide";
     const variants = {
     primary: "bg-primary text-white hover:bg-primary-dark shadow-sm",
     secondary: "bg-secondary text-neutral-900 hover:bg-secondary-dark shadow-sm",

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import type { User, Product, Store } from '../types';
-import { IoAddCircleOutline, IoFastFoodOutline, IoTrashOutline } from "react-icons/io5";
+import { IoAddCircleOutline, IoFastFoodOutline, IoTrashOutline, IoCloseOutline, IoPricetagOutline } from "react-icons/io5";
 import { Toast } from "../common/UI/Toast";
 import type { ToastType } from "../common/UI/Toast";
-import { apiGetProductsByStore, apiGetStoreById, apiCreateProduct, apiToggleProductAvailability, apiDeleteProduct } from '../services/services';
+import { apiGetProductsByStore, apiGetStoreById, apiCreateProduct, apiToggleProductAvailability, apiDeleteProduct, apiUpdateStoreCategories } from '../services/services';
 
 interface VendorMenuAdminProps {
   currentUser: User | null;
@@ -15,6 +15,7 @@ export const VendorMenuAdmin = ({ currentUser }: VendorMenuAdminProps) => {
   const [productForm, setProductForm] = useState({
     name: '', description: '', price: '', imageUrl: '', prepTimeMinutes: '', category: ''
   });
+  const [newCategory, setNewCategory] = useState('');
   const [toast, setToast] = useState<{ message: string; type: ToastType; isVisible: boolean }>({
     message: '', type: 'success', isVisible: false
   });
@@ -52,6 +53,36 @@ export const VendorMenuAdmin = ({ currentUser }: VendorMenuAdminProps) => {
     }
   };
 
+  const handleAddCategory = async () => {
+    const trimmed = newCategory.trim();
+    if (!trimmed || !storeData || !currentUser?.storeId) return;
+    if (storeData.categories.includes(trimmed)) {
+      setToast({ message: 'Esa categoría ya existe.', type: 'error', isVisible: true });
+      return;
+    }
+    const updated = [...storeData.categories, trimmed];
+    const result = await apiUpdateStoreCategories(currentUser.storeId, updated);
+    if (result.success) {
+      setStoreData({ ...storeData, categories: updated });
+      setNewCategory('');
+      setToast({ message: 'Categoría añadida.', type: 'success', isVisible: true });
+    } else {
+      setToast({ message: result.error ?? 'Error al actualizar categorías', type: 'error', isVisible: true });
+    }
+  };
+
+  const handleRemoveCategory = async (cat: string) => {
+    if (!storeData || !currentUser?.storeId) return;
+    const updated = storeData.categories.filter(c => c !== cat);
+    const result = await apiUpdateStoreCategories(currentUser.storeId, updated);
+    if (result.success) {
+      setStoreData({ ...storeData, categories: updated });
+      setToast({ message: 'Categoría eliminada.', type: 'success', isVisible: true });
+    } else {
+      setToast({ message: result.error ?? 'Error al actualizar categorías', type: 'error', isVisible: true });
+    }
+  };
+
   const handleToggleAvailability = async (productId: string) => {
     const result = await apiToggleProductAvailability(productId);
     if (result.success) {
@@ -78,7 +109,7 @@ export const VendorMenuAdmin = ({ currentUser }: VendorMenuAdminProps) => {
         <p className="text-neutral-500">Gestionando: <span className="font-bold text-orange-500">{storeData.nombre}</span></p>
       </header>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <aside className="h-fit lg:sticky lg:top-6">
+        <aside className="space-y-6 h-fit lg:sticky lg:top-6">
           <section className="bg-white p-6 rounded-3xl border border-neutral-100 shadow-md">
             <div className="flex items-center gap-2 mb-6 text-orange-500">
               <IoAddCircleOutline className="text-2xl" />
@@ -122,7 +153,7 @@ export const VendorMenuAdmin = ({ currentUser }: VendorMenuAdminProps) => {
                 <label className="block text-sm font-bold text-neutral-600 mb-1">Categoría</label>
                 <select value={productForm.category}
                   onChange={(e) => setProductForm({...productForm, category: e.target.value})}
-                  className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none" required>
+                  className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none cursor-pointer" required>
                   <option value="">Seleccionar Categoria</option>
                   {storeData.categories.map((cat, i) => (
                     <option key={i} value={cat}>{cat}</option>
@@ -130,10 +161,50 @@ export const VendorMenuAdmin = ({ currentUser }: VendorMenuAdminProps) => {
                 </select>
               </div>
               <button type="submit"
-                className="w-full bg-orange-500 text-white font-bold py-3 rounded-xl hover:bg-orange-600 transition-transform active:scale-95 shadow-lg">
+                className="w-full bg-orange-500 text-white font-bold py-3 rounded-xl hover:bg-orange-600 cursor-pointer transition-transform active:scale-95 shadow-lg">
                 Guardar en Menú
               </button>
             </form>
+          </section>
+
+          <section className="bg-white p-6 rounded-3xl border border-neutral-100 shadow-md">
+            <div className="flex items-center gap-2 mb-4 text-orange-500">
+              <IoPricetagOutline className="text-2xl" />
+              <h2 className="text-xl font-bold text-neutral-800">Categorías</h2>
+            </div>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {storeData.categories.length === 0 && (
+                <p className="text-sm text-neutral-400">No hay categorías aún.</p>
+              )}
+              {storeData.categories.map((cat) => (
+                <span key={cat} className="flex items-center gap-1 bg-orange-50 text-orange-600 border border-orange-200 text-xs font-bold px-3 py-1.5 rounded-full">
+                  {cat}
+                  <button
+                    onClick={() => handleRemoveCategory(cat)}
+                    className="ml-1 hover:text-red-500 cursor-pointer transition-colors"
+                    title="Eliminar categoría"
+                  >
+                    <IoCloseOutline size={14} />
+                  </button>
+                </span>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddCategory())}
+                placeholder="Nueva categoría..."
+                className="flex-1 p-2.5 bg-neutral-50 border border-neutral-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-500 outline-none"
+              />
+              <button
+                onClick={handleAddCategory}
+                className="px-4 py-2 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 cursor-pointer transition-colors text-sm"
+              >
+                Añadir
+              </button>
+            </div>
           </section>
         </aside>
 
@@ -156,11 +227,11 @@ export const VendorMenuAdmin = ({ currentUser }: VendorMenuAdminProps) => {
                 </div>
                 <div className="flex gap-2">
                   <button onClick={() => handleToggleAvailability(product.productId)}
-                    className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter ${product.isAvailable ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+                    className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter cursor-pointer ${product.isAvailable ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
                     {product.isAvailable ? 'Activo' : 'Agotado'}
                   </button>
                   <button onClick={() => handleDeleteProduct(product.productId)}
-                    className="p-2 text-neutral-300 hover:text-red-500 transition-colors">
+                    className="p-2 text-neutral-300 hover:text-red-500 cursor-pointer transition-colors">
                     <IoTrashOutline size={18} />
                   </button>
                 </div>

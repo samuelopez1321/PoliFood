@@ -12,7 +12,7 @@ export const OrderStatus = () => {
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null); //Sirve para almacenar el intervalo de tiempo y el useRef es persistente entre renders
 
   const stopPolling = () => {
     if (intervalRef.current) {

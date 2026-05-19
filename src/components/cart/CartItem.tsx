@@ -37,7 +37,7 @@ export const CartItem = ({
         <div className="flex items-center gap-2 bg-white rounded-xl border border-neutral-200 p-1">
           <button
             onClick={() => onDecrease(product.productId)}
-            className="w-8 h-8 flex items-center justify-center text-neutral-600 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-neutral-600 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer"
             aria-label="Disminuir cantidad"
           >
             <IoRemoveOutline className="text-lg" />
@@ -49,7 +49,7 @@ export const CartItem = ({
 
           <button
             onClick={() => onIncrease(product.productId)}
-            className="w-8 h-8 flex items-center justify-center text-neutral-600 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-neutral-600 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer"
             aria-label="Aumentar cantidad"
           >
             <IoAddOutline className="text-lg" />
@@ -64,7 +64,7 @@ export const CartItem = ({
 
           <button
             onClick={() => onRemove(product.productId)}
-            className="w-9 h-9 flex items-center justify-center text-neutral-400 hover:text-accent hover:bg-accent/10 rounded-lg transition-colors"
+            className="w-9 h-9 flex items-center justify-center text-neutral-400 hover:text-accent hover:bg-accent/10 rounded-lg transition-colors cursor-pointer"
             aria-label="Eliminar producto"
           >
             <IoTrashOutline className="text-lg" />

@@ -7,6 +7,66 @@ interface OrdersPageProps {
   currentUser: User | null;
 }
 
+const isToday = (dateStr: string) => {
+  const d = new Date(dateStr);
+  const now = new Date();
+  return d.getDate() === now.getDate() &&
+    d.getMonth() === now.getMonth() &&
+    d.getFullYear() === now.getFullYear();
+};
+
+const formatDate = (dateStr: string) =>
+  new Date(dateStr).toLocaleString('es-CO', {
+    day: 'numeric', month: 'long', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  });
+
+const OrderCard = ({ order }: { order: Order }) => {
+  const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
+  return (
+    <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 pb-4 border-b border-neutral-100 gap-3">
+        <div className="flex-1">
+          <div className="flex items-center gap-3 mb-2 flex-wrap">
+            <h2 className="text-xl font-black text-neutral-900">Orden #{order.orderId.slice(0, 8)}</h2>
+            <span className="px-3 py-1 rounded-full text-xs font-bold bg-neutral-100 text-neutral-700">{order.status}</span>
+          </div>
+          <p className="text-xs text-neutral-400">{formatDate(order.createdAt)}</p>
+        </div>
+        <div className="text-left sm:text-right">
+          <p className="text-2xl font-black text-primary">${order.total.toLocaleString()}</p>
+          <p className="text-xs text-neutral-500">{totalItems} producto{totalItems !== 1 ? 's' : ''}</p>
+        </div>
+      </div>
+
+      <div className="space-y-2 mb-4">
+        {order.items.map((item) => (
+          <div key={item.productId} className="flex items-center gap-3 p-3 bg-neutral-50 rounded-xl">
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-neutral-900 truncate">{item.productName}</p>
+              <p className="text-sm text-neutral-500">Cantidad: {item.quantity}</p>
+            </div>
+            <p className="font-bold text-neutral-700 flex-shrink-0">
+              ${(item.price * item.quantity).toLocaleString()}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-xl border border-primary/20 mb-4">
+        <div>
+          <p className="text-xs font-bold text-neutral-500 uppercase">Tiempo estimado</p>
+          <p className="font-black text-primary">{order.etaMinutes} minutos</p>
+        </div>
+      </div>
+
+      <Link to={`/order/${order.orderId}`} className="block text-center bg-primary/10 text-primary font-bold px-4 py-2 rounded-xl hover:bg-primary/20 transition-colors text-sm">
+        Ver detalle
+      </Link>
+    </div>
+  );
+};
+
 export const OrdersPage = ({ currentUser }: OrdersPageProps) => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
@@ -46,6 +106,9 @@ export const OrdersPage = ({ currentUser }: OrdersPageProps) => {
     );
   }
 
+  const todayOrders = orders.filter(o => isToday(o.createdAt));
+  const previousOrders = orders.filter(o => !isToday(o.createdAt));
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
       <section className="bg-white p-6 sm:p-8 rounded-3xl border border-neutral-100 shadow-sm">
@@ -53,55 +116,19 @@ export const OrdersPage = ({ currentUser }: OrdersPageProps) => {
         <p className="text-neutral-500">Tienes {orders.length} pedido{orders.length !== 1 ? 's' : ''} en total</p>
       </section>
 
-      <div className="space-y-4">
-        {orders.map((order) => {
-          const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
-          return (
-            <div key={order.orderId} className="bg-white rounded-3xl border border-neutral-100 shadow-sm p-6 hover:shadow-md transition-shadow">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 pb-4 border-b border-neutral-100 gap-3">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2 flex-wrap">
-                    <h2 className="text-xl font-black text-neutral-900">Orden #{order.orderId.slice(0, 8)}</h2>
-                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-neutral-100 text-neutral-700">{order.status}</span>
-                  </div>
-                  <p className="text-xs text-neutral-400">
-                    {new Date(order.createdAt).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                  </p>
-                </div>
-                <div className="text-left sm:text-right">
-                  <p className="text-2xl font-black text-primary">${order.total.toLocaleString()}</p>
-                  <p className="text-xs text-neutral-500">{totalItems} producto{totalItems !== 1 ? 's' : ''}</p>
-                </div>
-              </div>
+      {todayOrders.length > 0 && (
+        <div className="space-y-4">
+          <h2 className="text-sm font-black text-neutral-400 uppercase tracking-widest px-1">Hoy</h2>
+          {todayOrders.map(order => <OrderCard key={order.orderId} order={order} />)}
+        </div>
+      )}
 
-              <div className="space-y-2 mb-4">
-                {order.items.map((item) => (
-                  <div key={item.productId} className="flex items-center gap-3 p-3 bg-neutral-50 rounded-xl">
-                    <div className="flex-1 min-w-0">
-                      <p className="font-bold text-neutral-900 truncate">{item.productName}</p>
-                      <p className="text-sm text-neutral-500">Cantidad: {item.quantity}</p>
-                    </div>
-                    <p className="font-bold text-neutral-700 flex-shrink-0">
-                      ${(item.price * item.quantity).toLocaleString()}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-xl border border-primary/20 mb-4">
-                <div>
-                  <p className="text-xs font-bold text-neutral-500 uppercase">Tiempo estimado</p>
-                  <p className="font-black text-primary">{order.etaMinutes} minutos</p>
-                </div>
-              </div>
-
-              <Link to={`/order/${order.orderId}`} className="block text-center bg-primary/10 text-primary font-bold px-4 py-2 rounded-xl hover:bg-primary/20 transition-colors text-sm">
-                Ver detalle →
-              </Link>
-            </div>
-          );
-        })}
-      </div>
+      {previousOrders.length > 0 && (
+        <div className="space-y-4">
+          <h2 className="text-sm font-black text-neutral-400 uppercase tracking-widest px-1">Anteriores</h2>
+          {previousOrders.map(order => <OrderCard key={order.orderId} order={order} />)}
+        </div>
+      )}
 
       <Link to="/" className="block text-center bg-white text-neutral-700 font-bold px-6 py-4 rounded-2xl hover:bg-neutral-50 transition-all border border-neutral-200">
         Volver al inicio

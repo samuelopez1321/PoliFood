@@ -106,6 +106,20 @@ export async function apiCreateStore(dto: {
   }
 }
 
+export async function apiUpdateStoreCategories(storeId: string, categories: string[]): Promise<ApiResponse<boolean>> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/stores/${storeId}`, {
+      method: 'PUT',
+      headers: authHeaders(),
+      body: JSON.stringify({ categories }),
+    });
+    if (!res.ok) return { success: false, error: 'Error al actualizar categorías' };
+    return { success: true, data: true };
+  } catch {
+    return { success: false, error: 'No se pudo conectar al servidor' };
+  }
+}
+
 export async function apiDeactivateStore(storeId: string): Promise<ApiResponse<boolean>> {
   try {
     const res = await fetch(`${API_BASE_URL}/api/stores/${storeId}`, {
