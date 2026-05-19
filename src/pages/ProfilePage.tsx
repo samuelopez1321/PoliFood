@@ -141,7 +141,7 @@ export const ProfilePage = ({ currentUser }: ProfilePageProps) => {
                 <p className="text-xs font-bold text-neutral-400 uppercase tracking-widest">Tienda asignada</p>
                 <p className="text-base font-bold text-neutral-800 mt-0.5">{store.nombre}</p>
                 <p className="text-xs text-neutral-400 mt-0.5">
-                  {store.available === 1 ? '🟢 Abierta' : '🔴 Cerrada'}
+                  {store.available === 1 ? 'Abierta' : 'Cerrada'}
                 </p>
               </div>
             </div>

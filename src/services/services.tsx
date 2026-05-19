@@ -8,7 +8,7 @@ export interface ApiResponse<T> {
   error?: string;
 }
 
-//Token utilities
+//Token
 export function getToken(): string | null {
   return sessionStorage.getItem('authTokenJWT');
 }

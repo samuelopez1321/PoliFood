@@ -42,7 +42,7 @@ export interface OrderItemResponse {
 export enum orderStatuses {
     Recibido = "RECIBIDO",
     Preparando = "PREPARANDO",
-    EnCamino = "EN_CAMINO",
+    EnCamino = "Listo para recoger",
     Enviado = "ENVIADO"
 }
 

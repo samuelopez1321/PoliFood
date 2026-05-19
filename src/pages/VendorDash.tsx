@@ -20,7 +20,12 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
       apiGetStoreOrders(currentUser.storeId),
     ]).then(([storeRes, ordersRes]) => {
       if (storeRes.success && storeRes.data) setStoreData(storeRes.data);
-      if (ordersRes.success && ordersRes.data) setStoreOrders(ordersRes.data);
+      if (ordersRes.success && ordersRes.data) {
+        const sorted = [...ordersRes.data].sort(
+          (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+        setStoreOrders(sorted);
+      }
       setLoading(false);
     });
   }, [currentUser?.storeId]);
@@ -54,15 +59,16 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
 
   return (
     <div className="space-y-8">
-      <header className="bg-white p-8 rounded-3xl border border-neutral-100 shadow-sm flex justify-between items-center">
+      <header className="bg-white p-6 sm:p-8 rounded-3xl border border-neutral-100 shadow-sm">
         <div>
-          <h1 className="text-4xl font-black text-neutral-900">{storeData.nombre}</h1>
+          <h1 className="text-3xl sm:text-4xl font-black text-neutral-900">{storeData.nombre}</h1>
           <p className="text-neutral-500">Panel de administracion de pedidos</p>
         </div>
       </header>
 
       <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm overflow-hidden">
-        <table className="w-full text-left">
+        <div className="overflow-x-auto">
+        <table className="w-full text-left min-w-[560px]">
           <thead className="bg-neutral-50 text-neutral-500 text-xs uppercase font-bold">
             <tr>
               <th className="px-6 py-4">ID</th>
@@ -103,6 +109,7 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

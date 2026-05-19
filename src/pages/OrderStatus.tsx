@@ -1,29 +1,50 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { apiGetOrderById } from '../services/services';
 import type { Order } from '../types';
+import { orderStatuses } from '../types';
+//Cada 10 segundos se pide el estado de la orden hasta que sea enviada
+const POLL_INTERVAL_MS = 10000;
+const PARAR_POLL_STATUS = orderStatuses.Enviado;
 
 export const OrderStatus = () => {
   const { orderId } = useParams<{ orderId: string }>();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const stopPolling = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
 
   useEffect(() => {
     if (!orderId) {
       setLoading(false);
       return;
     }
-    setLoading(true);
-    setError(null);
-    apiGetOrderById(orderId).then(resultado => {
+
+    const fetchOrder = async () => {
+      const resultado = await apiGetOrderById(orderId);
       if (resultado.success && resultado.data) {
         setOrder(resultado.data);
+        if (resultado.data.status === PARAR_POLL_STATUS) stopPolling();
       } else {
         setError(resultado.error || 'Orden no encontrada');
+        stopPolling();
       }
-      setLoading(false);
-    });
+    };
+
+    setLoading(true);
+    setError(null);
+    fetchOrder().finally(() => setLoading(false));
+
+    intervalRef.current = setInterval(fetchOrder, POLL_INTERVAL_MS);
+
+    return stopPolling;
   }, [orderId]);
 
   if (!orderId) {

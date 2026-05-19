@@ -58,7 +58,7 @@ export const AdminPage = ({ currentUser: _currentUser }: AdminPageProps) => {
 return (
     <div className="space-y-10">
       <header>
-        <h1 className="text-4xl font-black text-neutral-900">Gestión de Plataforma</h1>
+        <h1 className="text-3xl sm:text-4xl font-black text-neutral-900">Gestión de Plataforma</h1>
         <p className="text-neutral-500">Administrar los vendedores</p>
       </header>
 
@@ -109,7 +109,8 @@ return (
           <div className="p-6 border-b border-neutral-100">
             <h2 className="text-xl font-bold text-neutral-800">Vendedores Activos</h2>
           </div>
-          <table className="w-full text-left">
+          <div className="overflow-x-auto">
+          <table className="w-full text-left min-w-[480px]">
             <thead className="bg-neutral-50 text-neutral-400 text-xs uppercase">
               <tr>
                 <th className="px-6 py-4">Nombre</th>
@@ -140,6 +141,7 @@ return (
               })}
             </tbody>
           </table>
+          </div>
         </section>
       </div>
 

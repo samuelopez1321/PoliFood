@@ -78,7 +78,7 @@ export const VendorMenuAdmin = ({ currentUser }: VendorMenuAdminProps) => {
         <p className="text-neutral-500">Gestionando: <span className="font-bold text-orange-500">{storeData.nombre}</span></p>
       </header>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <aside className="h-fit sticky top-6">
+        <aside className="h-fit lg:sticky lg:top-6">
           <section className="bg-white p-6 rounded-3xl border border-neutral-100 shadow-md">
             <div className="flex items-center gap-2 mb-6 text-orange-500">
               <IoAddCircleOutline className="text-2xl" />
