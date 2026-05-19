@@ -73,7 +73,7 @@ export default function LogInPage({ onLogin }: LogInPageProps) {
             </div>
           )}
           <button type="submit" disabled={isSubmitting}
-            className="w-full bg-primary text-white font-black py-4 rounded-2xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
+            className="w-full bg-primary text-white font-black py-4 rounded-2xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group mt-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed">
             {isSubmitting
               ? <span className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               : <><span>Entrar</span><IoArrowForward className="group-hover:translate-x-1 transition-transform" /></>}

@@ -80,7 +80,7 @@ export const StoresPage = () => {
                 className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" />
             </div>
             <button type="submit"
-              className="w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary/90 transition-colors">
+              className="w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary/90 transition-colors cursor-pointer">
               Crear Tienda
             </button>
           </form>
@@ -119,7 +119,7 @@ export const StoresPage = () => {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <button onClick={() => handleDeleteStore(store.storeId)}
-                      className="text-red-400 hover:text-red-600 p-2 transition-colors" title="Desactivar Tienda">
+                      className="text-red-400 hover:text-red-600 p-2 transition-colors cursor-pointer" title="Desactivar Tienda">
                       <IoTrashOutline size={18} />
                     </button>
                   </td>

@@ -276,14 +276,14 @@ export const CartPage = ({
             <button
               onClick={() => setShowModal(false)}
               disabled={isProcessing}
-              className="flex-1 bg-neutral-100 text-neutral-700 font-bold py-3 rounded-2xl hover:bg-neutral-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 bg-neutral-100 text-neutral-700 font-bold py-3 rounded-2xl hover:bg-neutral-200 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Cancelar
             </button>
             <button
               onClick={handleConfirmCheckout}
               disabled={isProcessing}
-              className="flex-1 bg-primary text-white font-bold py-3 rounded-2xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 bg-primary text-white font-bold py-3 rounded-2xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isProcessing ? (
                 <>

@@ -42,7 +42,7 @@ export const Toast = ({ message, type, isVisible, onClose, duration = 3000 }: To
         <p className="font-bold flex-1">{message}</p>
         <button
           onClick={onClose}
-          className="p-1 hover:bg-white/20 rounded-lg transition-colors"
+          className="p-1 hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
           aria-label="Cerrar"
         >
           <IoCloseCircleOutline className="text-xl" />

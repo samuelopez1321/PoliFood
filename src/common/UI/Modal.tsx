@@ -41,7 +41,7 @@ export const Modal = ({ isOpen, onClose, children, title }: ModalProps) => {
             <h2 className="text-2xl font-black text-neutral-900">{title}</h2>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-neutral-100 rounded-xl transition-colors"
+              className="p-2 hover:bg-neutral-100 rounded-xl transition-colors cursor-pointer"
               aria-label="Cerrar"
             >
               <IoCloseOutline className="text-2xl text-neutral-400" />

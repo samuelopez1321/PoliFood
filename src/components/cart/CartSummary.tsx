@@ -57,7 +57,7 @@ export const CartSummary = ({
         className={`w-full font-black py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2 group ${
           disabled 
             ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed' 
-            : 'bg-primary text-white hover:bg-primary-dark shadow-primary/20'
+            : 'bg-primary text-white hover:bg-primary-dark shadow-primary/20 cursor-pointer'
         }`}
       >
         <IoCheckmarkCircleOutline className="text-xl" />

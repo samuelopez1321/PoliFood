@@ -91,7 +91,7 @@ return (
               <label className="block text-sm font-medium text-neutral-700 mb-1">Asignar Tienda</label>
               <select value={newVendor.storeId}
                 onChange={(e) => setNewVendor({...newVendor, storeId: e.target.value})}
-                className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary outline-none">
+                className="w-full p-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary outline-none cursor-pointer">
                 <option value="">Seleccionar tienda...</option>
                 {allStores.map(store => (
                   <option key={store.storeId} value={store.storeId}>{store.nombre}</option>
@@ -99,7 +99,7 @@ return (
               </select>
             </div>
             <button type="submit"
-              className="w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary/90 transition-colors">
+              className="w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-primary/90 transition-colors cursor-pointer">
               Crear Vendedor
             </button>
           </form>
