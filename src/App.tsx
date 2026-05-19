@@ -16,6 +16,7 @@ import OrderStatus from "./pages/OrderStatus";
 import { UserRole } from './types';
 import { apiCreateOrder, removeToken } from './services/services';
 import OrdersPage from './pages/OrdersPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
@@ -141,6 +142,7 @@ function App() {
                 />
                 <Route path="/order/:orderId" element={<OrderStatus />} />
                 <Route path="/mis-pedidos" element={<OrdersPage currentUser={currentUser} />} />
+                <Route path="/perfil" element={<ProfilePage currentUser={currentUser} />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </>
             )}

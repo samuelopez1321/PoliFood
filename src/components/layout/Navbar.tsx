@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { User, Store } from '../../types';
 import { Link } from 'react-router-dom';
-import { IoLogOutOutline, IoCartOutline } from 'react-icons/io5';
+import { IoLogOutOutline, IoCartOutline, IoPersonOutline } from 'react-icons/io5';
 import { apiGetStoreById, apiDeactivateStore } from '../../services/services';
 
 interface NavbarProps {
@@ -98,7 +98,14 @@ export default function Navbar({ User, cartCount, onLogout }: NavbarProps) {
                   {User?.nombre.charAt(0)}
                 </button>
                 {menuOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-32 bg-white border border-neutral-100 shadow-xl rounded-2xl overflow-hidden py-1">
+                  <div className="absolute right-0 top-full mt-2 w-40 bg-white border border-neutral-100 shadow-xl rounded-2xl overflow-hidden py-1">
+                    <Link
+                      to="/perfil"
+                      onClick={() => setMenuOpen(false)}
+                      className="w-full px-4 py-2 flex items-center gap-2 text-xs font-bold text-neutral-600 hover:bg-neutral-50"
+                    >
+                      <IoPersonOutline /> Mi Perfil
+                    </Link>
                     <button
                       onClick={() => {
                         setMenuOpen(false);

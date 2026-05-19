@@ -256,6 +256,37 @@ export async function apiUpdateOrderStatus(
   }
 }
 
+// ── User profiles ──────────────────────────────────────────────
+export async function apiGetEstudianteById(id: string): Promise<ApiResponse<{ id: string; nombre: string; email: string; userRole: string }>> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/estudiante/${id}`, { headers: authHeaders() });
+    if (!res.ok) return { success: false, error: 'Perfil no encontrado' };
+    return { success: true, data: await res.json() };
+  } catch {
+    return { success: false, error: 'No se pudo conectar al servidor' };
+  }
+}
+
+export async function apiGetVendorById(id: string): Promise<ApiResponse<{ id: string; nombre: string; email: string; userRole: string; storeId: string }>> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/vendor/${id}`, { headers: authHeaders() });
+    if (!res.ok) return { success: false, error: 'Perfil no encontrado' };
+    return { success: true, data: await res.json() };
+  } catch {
+    return { success: false, error: 'No se pudo conectar al servidor' };
+  }
+}
+
+export async function apiGetAdminById(id: string): Promise<ApiResponse<{ id: string; nombre: string; email: string; userRole: string }>> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/admin/${id}`, { headers: authHeaders() });
+    if (!res.ok) return { success: false, error: 'Perfil no encontrado' };
+    return { success: true, data: await res.json() };
+  } catch {
+    return { success: false, error: 'No se pudo conectar al servidor' };
+  }
+}
+
 // ── Admin/Vendor users ─────────────────────────────────────────
 export async function apiGetVendors(): Promise<ApiResponse<User[]>> {
   try {
