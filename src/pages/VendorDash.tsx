@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import type { User, Order, Store } from '../types';
 import { orderStatuses } from "../types";
-import { IoTimeOutline } from "react-icons/io5";
+import { IoTimeOutline, IoPersonOutline, IoMailOutline } from "react-icons/io5";
 import { apiGetStoreOrders, apiGetStoreById, apiUpdateOrderStatus } from '../services/services';
 
 interface VendorDashProps {
@@ -68,10 +68,11 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
 
       <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-        <table className="w-full text-left min-w-[560px]">
+        <table className="w-full text-left min-w-[780px]">
           <thead className="bg-neutral-50 text-neutral-500 text-xs uppercase font-bold">
             <tr>
-              <th className="px-6 py-4">ID</th>
+              <th className="px-6 py-4">ID / Hora</th>
+              <th className="px-6 py-4">Estudiante</th>
               <th className="px-6 py-4">Pedido</th>
               <th className="px-6 py-4">Estado / ETA</th>
               <th className="px-6 py-4 text-right">Total</th>
@@ -80,7 +81,23 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
           <tbody className="divide-y divide-neutral-100">
             {storeOrders.map((order) => (
               <tr key={order.orderId} className="hover:bg-neutral-50/50 transition-colors">
-                <td className="px-6 py-4 font-bold text-primary">#{order.orderId.slice(0, 8)}</td>
+                <td className="px-6 py-4">
+                  <p className="font-bold text-primary">#{order.orderId.slice(0, 8)}</p>
+                  <p className="text-xs text-neutral-400 flex items-center gap-1 mt-0.5">
+                    <IoTimeOutline />
+                    {new Date(order.createdAt).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                </td>
+                <td className="px-6 py-4 text-sm">
+                  <p className="font-bold text-neutral-800 flex items-center gap-1">
+                    <IoPersonOutline className="text-neutral-400 flex-shrink-0" />
+                    {order.studentName || '—'}
+                  </p>
+                  <p className="text-neutral-400 flex items-center gap-1 mt-0.5">
+                    <IoMailOutline className="flex-shrink-0" />
+                    {order.studentEmail || '—'}
+                  </p>
+                </td>
                 <td className="px-6 py-4 text-sm text-neutral-600">
                   {order.items.map(item => (
                     <div key={item.productId}>{item.quantity}x {item.productName}</div>
@@ -98,7 +115,7 @@ export const VendorDash = ({ currentUser }: VendorDashProps) => {
                       ))}
                     </select>
                     <span className="text-xs text-neutral-400 flex items-center gap-1 mt-1">
-                      <IoTimeOutline /> {order.etaMinutes} min
+                      <IoTimeOutline /> {order.etaMinutes} min ETA
                     </span>
                   </div>
                 </td>

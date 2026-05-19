@@ -42,13 +42,15 @@ export interface OrderItemResponse {
 export enum orderStatuses {
     Recibido = "RECIBIDO",
     Preparando = "PREPARANDO",
-    EnCamino = "Listo para recoger",
-    Enviado = "ENVIADO"
+    EnCamino = "LISTO",
+    Enviado = "ENTREGADO"
 }
 
 export interface Order {
     orderId: string;
     studentId: string;
+    studentName?: string;
+    studentEmail?: string;
     storeId: string;
     status: orderStatuses;
     items: OrderItemResponse[];
